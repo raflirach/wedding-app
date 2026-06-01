@@ -1,7 +1,8 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { deleteWedding, togglePublish } from '@/app/actions/weddings'
+import { togglePublish } from '@/app/actions/weddings'
+import DeleteButton from './DeleteButton'
 
 export default async function WeddingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -30,7 +31,6 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
       .eq('rsvp_status', 'attending'),
   ])
 
-  const deleteWithId = deleteWedding.bind(null, id)
   const toggleWithId = togglePublish.bind(null, id, wedding.is_published)
 
   return (
@@ -47,15 +47,7 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
           <Link href={`/weddings/${id}/edit`} className="btn btn-outline btn-sm">
             Edit
           </Link>
-          <form action={deleteWithId}>
-            <button
-              type="submit"
-              className="btn btn-error btn-outline btn-sm"
-              onClick={(e) => !confirm('Hapus undangan ini?') && e.preventDefault()}
-            >
-              Hapus
-            </button>
-          </form>
+          <DeleteButton id={id} />
         </div>
       </div>
 
