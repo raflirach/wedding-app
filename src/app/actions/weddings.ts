@@ -1,4 +1,4 @@
-'use server'
+﻿'use server'
 
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
@@ -51,7 +51,7 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
     return { error: error.message }
   }
 
-  redirect(`/dashboard/weddings/${wedding.id}`)
+  redirect(`/weddings/${wedding.id}`)
 }
 
 export async function updateWedding(id: string, data: WeddingFormData): Promise<WeddingActionResult> {
@@ -79,7 +79,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
     return { error: error.message }
   }
 
-  revalidatePath(`/dashboard/weddings/${id}`)
+  revalidatePath(`/weddings/${id}`)
   revalidatePath('/dashboard')
 }
 
@@ -108,5 +108,5 @@ export async function togglePublish(id: string, isPublished: boolean): Promise<v
 
   if (error) throw new Error(error.message)
 
-  revalidatePath(`/dashboard/weddings/${id}`)
+  revalidatePath(`/weddings/${id}`)
 }

@@ -41,7 +41,7 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"
-        cancelHref={`/dashboard/weddings/${id}`}
+        cancelHref={`/weddings/${id}`}
       />
     </div>
   )

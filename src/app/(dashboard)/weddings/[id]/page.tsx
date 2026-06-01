@@ -44,7 +44,7 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
           <p className="text-base-content/60 text-sm mt-1">/w/{wedding.slug}</p>
         </div>
         <div className="flex gap-2 shrink-0">
-          <Link href={`/dashboard/weddings/${id}/edit`} className="btn btn-outline btn-sm">
+          <Link href={`/weddings/${id}/edit`} className="btn btn-outline btn-sm">
             Edit
           </Link>
           <form action={deleteWithId}>
@@ -118,7 +118,7 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
 
       {/* Actions */}
       <div className="flex gap-3">
-        <Link href={`/dashboard/weddings/${id}/guests`} className="btn btn-primary flex-1">
+        <Link href={`/weddings/${id}/guests`} className="btn btn-primary flex-1">
           Kelola Tamu
         </Link>
         <Link href={`/w/${wedding.slug}`} className="btn btn-outline flex-1" target="_blank">

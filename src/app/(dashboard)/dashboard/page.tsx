@@ -25,7 +25,7 @@ export default async function DashboardPage() {
           </h1>
           <p className="text-base-content/60 mt-1">Kelola undangan pernikahanmu</p>
         </div>
-        <Link href="/dashboard/weddings/new" className="btn btn-primary">
+        <Link href="/weddings/new" className="btn btn-primary">
           + Buat Undangan
         </Link>
       </div>
@@ -35,7 +35,7 @@ export default async function DashboardPage() {
           {weddings.map((w) => (
             <Link
               key={w.id}
-              href={`/dashboard/weddings/${w.id}`}
+              href={`/weddings/${w.id}`}
               className="card bg-base-100 shadow hover:shadow-md transition-shadow"
             >
               <div className="card-body">
@@ -65,7 +65,7 @@ export default async function DashboardPage() {
             <p className="text-base-content/60 text-sm mb-4">
               Buat undangan digital pertamamu sekarang
             </p>
-            <Link href="/dashboard/weddings/new" className="btn btn-primary">
+            <Link href="/weddings/new" className="btn btn-primary">
               Buat Undangan Pertama
             </Link>
           </div>

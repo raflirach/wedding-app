@@ -1,4 +1,4 @@
-'use server'
+﻿'use server'
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
@@ -56,7 +56,7 @@ export async function addGuest(
 
   if (error) return { error: error.message }
 
-  revalidatePath(`/dashboard/weddings/${weddingId}/guests`)
+  revalidatePath(`/weddings/${weddingId}/guests`)
 }
 
 export async function deleteGuest(weddingId: string, guestId: string): Promise<void> {
@@ -73,7 +73,7 @@ export async function deleteGuest(weddingId: string, guestId: string): Promise<v
 
   await supabase.from('guests').delete().eq('id', guestId).eq('wedding_id', weddingId)
 
-  revalidatePath(`/dashboard/weddings/${weddingId}/guests`)
+  revalidatePath(`/weddings/${weddingId}/guests`)
 }
 
 export async function updateRsvpStatus(
@@ -98,5 +98,5 @@ export async function updateRsvpStatus(
     .eq('id', guestId)
     .eq('wedding_id', weddingId)
 
-  revalidatePath(`/dashboard/weddings/${weddingId}/guests`)
+  revalidatePath(`/weddings/${weddingId}/guests`)
 }

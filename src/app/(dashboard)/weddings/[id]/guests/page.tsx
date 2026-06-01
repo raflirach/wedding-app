@@ -34,7 +34,7 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <Link href={`/dashboard/weddings/${id}`} className="btn btn-ghost btn-sm btn-square">
+        <Link href={`/weddings/${id}`} className="btn btn-ghost btn-sm btn-square">
           ←
         </Link>
         <div>
