@@ -40,6 +40,7 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           slug: wedding.slug,
           theme: wedding.theme ?? 'elegant',
           color_scheme: wedding.color_scheme ?? 'blush',
+          cover_photo_url: wedding.cover_photo_url ?? undefined,
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"

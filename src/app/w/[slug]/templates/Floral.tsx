@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import type { TemplateProps } from './types'
+import CountdownTimer from '../CountdownTimer'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -10,28 +12,26 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
-      {/* Ornament top */}
-      <div className="text-center pt-10 pb-2 text-3xl select-none" style={{ color: colors.accent }}>
+      {/* Cover Photo */}
+      {wedding.cover_photo_url && (
+        <div className="relative w-full h-64 md:h-80">
+          <Image src={wedding.cover_photo_url} alt="Cover" fill className="object-cover" unoptimized />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, ${colors.bg})` }} />
+        </div>
+      )}
+
+      <div className="text-center pt-8 pb-2 text-3xl select-none" style={{ color: colors.accent }}>
         ❧ ✾ ❧
       </div>
 
       {/* Hero */}
-      <section className="px-4 py-10 text-center">
-        <p
-          className="text-xs tracking-[0.35em] uppercase mb-6"
-          style={{ color: colors.textMuted }}
-        >
+      <section className="px-4 py-8 text-center">
+        <p className="text-xs tracking-[0.35em] uppercase mb-6" style={{ color: colors.textMuted }}>
           Undangan Pernikahan
         </p>
-
-        <div
-          className="inline-block border-2 rounded-full px-10 py-8 mb-6"
-          style={{ borderColor: colors.accent + '60' }}
-        >
-          <h1
-            className="text-5xl md:text-6xl font-serif italic font-bold"
-            style={{ color: colors.textDark }}
-          >
+        <div className="inline-block border-2 rounded-full px-10 py-8 mb-6"
+          style={{ borderColor: colors.accent + '60' }}>
+          <h1 className="text-5xl md:text-6xl font-serif italic font-bold" style={{ color: colors.textDark }}>
             {wedding.bride_name}
           </h1>
           <div className="flex items-center justify-center gap-3 my-3">
@@ -39,27 +39,20 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
             <span className="text-2xl" style={{ color: colors.primary }}>✿</span>
             <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
           </div>
-          <h1
-            className="text-5xl md:text-6xl font-serif italic font-bold"
-            style={{ color: colors.textDark }}
-          >
+          <h1 className="text-5xl md:text-6xl font-serif italic font-bold" style={{ color: colors.textDark }}>
             {wedding.groom_name}
           </h1>
         </div>
-
         <p className="text-sm italic" style={{ color: colors.textMuted }}>
           "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan-pasangan untukmu"
         </p>
         <p className="text-xs mt-1" style={{ color: colors.accent }}>— QS. Ar-Rum: 21</p>
       </section>
 
-      {/* Date */}
+      {/* Date + Countdown */}
       {wedding.wedding_date && (
-        <section className="py-10 px-4 max-w-sm mx-auto text-center">
-          <div
-            className="rounded-2xl p-8 border-2"
-            style={{ borderColor: colors.accent + '50', backgroundColor: colors.primaryLight }}
-          >
+        <section className="py-8 px-4 max-w-sm mx-auto text-center space-y-6">
+          <div className="rounded-2xl p-8 border-2" style={{ borderColor: colors.accent + '50', backgroundColor: colors.primaryLight }}>
             <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>
               Insya Allah Akan Dilangsungkan
             </p>
@@ -72,6 +65,7 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
               </p>
             )}
           </div>
+          <CountdownTimer date={wedding.wedding_date} colors={colors} />
         </section>
       )}
 
@@ -79,34 +73,22 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
       {wedding.venue_name && (
         <section className="py-8 px-4 max-w-sm mx-auto text-center">
           <p className="text-2xl mb-2 select-none">🌿</p>
-          <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>
-            Bertempat di
-          </p>
-          <p className="text-xl font-semibold" style={{ color: colors.textDark }}>
-            {wedding.venue_name}
-          </p>
+          <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>Bertempat di</p>
+          <p className="text-xl font-semibold" style={{ color: colors.textDark }}>{wedding.venue_name}</p>
           {wedding.venue_address && (
-            <p className="mt-1 text-sm" style={{ color: colors.textMuted }}>
-              {wedding.venue_address}
-            </p>
+            <p className="mt-1 text-sm" style={{ color: colors.textMuted }}>{wedding.venue_address}</p>
           )}
           {wedding.venue_maps_url && (
-            <a
-              href={wedding.venue_maps_url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={wedding.venue_maps_url} target="_blank" rel="noopener noreferrer"
               className="inline-block mt-3 px-5 py-2 rounded-full text-sm font-medium text-white"
-              style={{ backgroundColor: colors.primary }}
-            >
+              style={{ backgroundColor: colors.primary }}>
               Petunjuk Arah
             </a>
           )}
         </section>
       )}
 
-      <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>
-        ✾ ✾ ✾
-      </div>
+      <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
 
       {/* RSVP */}
       <section className="py-10 px-4 max-w-md mx-auto">
@@ -121,9 +103,7 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
         <RsvpForm weddingId={weddingId} />
       </section>
 
-      <div className="text-center pb-6 pt-2 text-2xl select-none" style={{ color: colors.accent }}>
-        ❧ ✾ ❧
-      </div>
+      <div className="text-center pb-6 pt-2 text-2xl select-none" style={{ color: colors.accent }}>❧ ✾ ❧</div>
 
       <footer className="py-6 text-center text-xs border-t" style={{ color: colors.accent + '80', borderColor: colors.accent + '30' }}>
         Dibuat dengan 💍 Wedding App

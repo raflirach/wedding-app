@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import type { TemplateProps } from './types'
+import CountdownTimer from '../CountdownTimer'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -10,61 +12,53 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
+      {/* Cover Photo */}
+      {wedding.cover_photo_url && (
+        <div className="relative w-full h-72 md:h-96">
+          <Image src={wedding.cover_photo_url} alt="Cover" fill className="object-cover" unoptimized />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 50%, ${colors.bg})` }} />
+        </div>
+      )}
+
       {/* Hero */}
-      <section className="py-20 px-4 text-center">
-        <p
-          className="text-xs tracking-[0.4em] uppercase mb-8 font-light"
-          style={{ color: colors.textMuted }}
-        >
+      <section className="py-16 px-4 text-center">
+        <p className="text-xs tracking-[0.4em] uppercase mb-8 font-light" style={{ color: colors.textMuted }}>
           — Undangan Pernikahan —
         </p>
-
         <div className="space-y-1">
-          <h1
-            className="text-6xl md:text-8xl font-serif font-bold leading-none"
-            style={{ color: colors.textDark }}
-          >
+          <h1 className="text-6xl md:text-8xl font-serif font-bold leading-none" style={{ color: colors.textDark }}>
             {wedding.bride_name}
           </h1>
-          <p className="text-4xl font-serif italic" style={{ color: colors.primary }}>
-            &amp;
-          </p>
-          <h1
-            className="text-6xl md:text-8xl font-serif font-bold leading-none"
-            style={{ color: colors.textDark }}
-          >
+          <p className="text-4xl font-serif italic" style={{ color: colors.primary }}>&amp;</p>
+          <h1 className="text-6xl md:text-8xl font-serif font-bold leading-none" style={{ color: colors.textDark }}>
             {wedding.groom_name}
           </h1>
         </div>
-
         <div className="flex items-center justify-center gap-4 mt-10">
           <div className="h-px w-16" style={{ backgroundColor: colors.accent }} />
           <span className="text-lg" style={{ color: colors.accent }}>✦</span>
           <div className="h-px w-16" style={{ backgroundColor: colors.accent }} />
         </div>
-
         <p className="mt-4 text-sm italic font-light" style={{ color: colors.textMuted }}>
           Bersama keluarga, kami mengundang kehadiran Anda
         </p>
       </section>
 
-      {/* Date */}
+      {/* Date + Countdown */}
       {wedding.wedding_date && (
-        <section
-          className="py-12 px-4 text-center"
-          style={{ backgroundColor: colors.primaryLight }}
-        >
+        <section className="py-12 px-4 text-center" style={{ backgroundColor: colors.primaryLight }}>
           <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>
             Hari Pernikahan
           </p>
-          <p className="text-2xl md:text-3xl font-semibold" style={{ color: colors.textDark }}>
+          <p className="text-2xl md:text-3xl font-semibold mb-1" style={{ color: colors.textDark }}>
             {formatDate(wedding.wedding_date)}
           </p>
           {wedding.wedding_time && (
-            <p className="mt-1 text-lg" style={{ color: colors.textMuted }}>
+            <p className="text-lg mb-6" style={{ color: colors.textMuted }}>
               {wedding.wedding_time.slice(0, 5)} WIB
             </p>
           )}
+          <CountdownTimer date={wedding.wedding_date} colors={colors} />
         </section>
       )}
 
@@ -74,26 +68,15 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }
           <p className="text-xs tracking-[0.3em] uppercase mb-4" style={{ color: colors.textMuted }}>
             Lokasi Acara
           </p>
-          <div
-            className="rounded-2xl p-6 border"
-            style={{ borderColor: colors.accent + '40', backgroundColor: '#ffffff80' }}
-          >
-            <p className="text-xl font-semibold" style={{ color: colors.textDark }}>
-              {wedding.venue_name}
-            </p>
+          <div className="rounded-2xl p-6 border" style={{ borderColor: colors.accent + '40', backgroundColor: '#ffffff80' }}>
+            <p className="text-xl font-semibold" style={{ color: colors.textDark }}>{wedding.venue_name}</p>
             {wedding.venue_address && (
-              <p className="mt-2 text-sm" style={{ color: colors.textMuted }}>
-                {wedding.venue_address}
-              </p>
+              <p className="mt-2 text-sm" style={{ color: colors.textMuted }}>{wedding.venue_address}</p>
             )}
             {wedding.venue_maps_url && (
-              <a
-                href={wedding.venue_maps_url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a href={wedding.venue_maps_url} target="_blank" rel="noopener noreferrer"
                 className="inline-block mt-4 px-4 py-2 rounded-full text-sm font-medium border"
-                style={{ borderColor: colors.primary, color: colors.primary }}
-              >
+                style={{ borderColor: colors.primary, color: colors.primary }}>
                 Lihat di Maps
               </a>
             )}
@@ -101,9 +84,7 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }
         </section>
       )}
 
-      <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>
-        ✦ ✦ ✦
-      </div>
+      <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>✦ ✦ ✦</div>
 
       {/* RSVP */}
       <section className="py-12 px-4 max-w-md mx-auto">

@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import type { TemplateProps } from './types'
+import CountdownTimer from '../CountdownTimer'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -10,11 +12,14 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
   return (
     <main className="min-h-screen bg-white">
 
-      {/* Hero — split color bar */}
-      <section
-        className="relative pt-24 pb-20 px-6 text-center overflow-hidden"
-        style={{ backgroundColor: colors.textDark }}
-      >
+      {/* Hero */}
+      <section className="relative pt-24 pb-20 px-6 text-center overflow-hidden"
+        style={{ backgroundColor: colors.textDark }}>
+        {wedding.cover_photo_url && (
+          <div className="absolute inset-0">
+            <Image src={wedding.cover_photo_url} alt="Cover" fill className="object-cover opacity-20" unoptimized />
+          </div>
+        )}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -22,20 +27,15 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
             backgroundSize: '10px 10px',
           }}
         />
-        <p
-          className="relative text-xs tracking-[0.5em] uppercase font-light mb-6"
-          style={{ color: colors.accent }}
-        >
+        <p className="relative text-xs tracking-[0.5em] uppercase font-light mb-6" style={{ color: colors.accent }}>
           Wedding Invitation
         </p>
         <div className="relative space-y-0">
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none">
             {wedding.bride_name}
           </h1>
-          <div
-            className="inline-block px-6 py-1 my-3 text-sm font-bold tracking-[0.3em] uppercase"
-            style={{ backgroundColor: colors.primary, color: 'white' }}
-          >
+          <div className="inline-block px-6 py-1 my-3 text-sm font-bold tracking-[0.3em] uppercase"
+            style={{ backgroundColor: colors.primary, color: 'white' }}>
             &amp;
           </div>
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none">
@@ -46,10 +46,7 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
 
       {/* Date strip */}
       {wedding.wedding_date && (
-        <div
-          className="py-5 px-4 text-center"
-          style={{ backgroundColor: colors.primary }}
-        >
+        <div className="py-5 px-4 text-center" style={{ backgroundColor: colors.primary }}>
           <p className="text-white font-bold text-lg tracking-wide">
             {formatDate(wedding.wedding_date)}
             {wedding.wedding_time && (
@@ -61,30 +58,28 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
         </div>
       )}
 
+      {/* Countdown */}
+      {wedding.wedding_date && (
+        <div className="py-8 px-4" style={{ backgroundColor: colors.primaryLight }}>
+          <CountdownTimer date={wedding.wedding_date} colors={colors} />
+        </div>
+      )}
+
       {/* Venue */}
       {wedding.venue_name && (
         <section className="py-14 px-6 max-w-lg mx-auto">
           <div className="flex gap-4">
-            <div
-              className="w-1 rounded-full shrink-0"
-              style={{ backgroundColor: colors.primary }}
-            />
+            <div className="w-1 rounded-full shrink-0" style={{ backgroundColor: colors.primary }} />
             <div>
               <p className="text-xs font-bold tracking-[0.3em] uppercase mb-1" style={{ color: colors.primary }}>
                 Lokasi
               </p>
               <p className="text-2xl font-bold text-gray-900">{wedding.venue_name}</p>
-              {wedding.venue_address && (
-                <p className="mt-1 text-gray-500 text-sm">{wedding.venue_address}</p>
-              )}
+              {wedding.venue_address && <p className="mt-1 text-gray-500 text-sm">{wedding.venue_address}</p>}
               {wedding.venue_maps_url && (
-                <a
-                  href={wedding.venue_maps_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a href={wedding.venue_maps_url} target="_blank" rel="noopener noreferrer"
                   className="inline-block mt-3 text-sm font-bold underline underline-offset-4"
-                  style={{ color: colors.primary }}
-                >
+                  style={{ color: colors.primary }}>
                   Buka di Maps →
                 </a>
               )}
@@ -93,17 +88,13 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
         </section>
       )}
 
-      {/* Divider */}
       <div className="max-w-lg mx-auto px-6">
         <div className="h-px" style={{ backgroundColor: colors.primaryLight }} />
       </div>
 
       {/* RSVP */}
       <section className="py-14 px-6 max-w-md mx-auto">
-        <p
-          className="text-xs font-bold tracking-[0.4em] uppercase mb-6"
-          style={{ color: colors.primary }}
-        >
+        <p className="text-xs font-bold tracking-[0.4em] uppercase mb-6" style={{ color: colors.primary }}>
           Konfirmasi Kehadiran
         </p>
         <RsvpForm weddingId={weddingId} />

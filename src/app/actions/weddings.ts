@@ -16,6 +16,7 @@ const WeddingSchema = z.object({
   slug: z.string().min(3, 'Slug minimal 3 karakter.').regex(/^[a-z0-9-]+$/, 'Slug hanya boleh huruf kecil, angka, dan tanda hubung.'),
   theme: z.string(),
   color_scheme: z.string(),
+  cover_photo_url: z.string().optional(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>
@@ -45,6 +46,7 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
       venue_maps_url: result.data.venue_maps_url || null,
       theme: result.data.theme,
       color_scheme: result.data.color_scheme,
+      cover_photo_url: result.data.cover_photo_url || null,
       user_id: user.id,
     })
     .select('id')
@@ -75,6 +77,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
       venue_maps_url: result.data.venue_maps_url || null,
       theme: result.data.theme,
       color_scheme: result.data.color_scheme,
+      cover_photo_url: result.data.cover_photo_url || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)

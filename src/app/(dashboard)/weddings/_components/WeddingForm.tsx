@@ -7,6 +7,7 @@ import { z } from 'zod'
 import Link from 'next/link'
 import type { WeddingActionResult } from '@/app/actions/weddings'
 import { TEMPLATES, COLOR_SCHEMES } from '@/lib/templates'
+import CoverPhotoUpload from '@/components/CoverPhotoUpload'
 
 export const weddingSchema = z.object({
   bride_name: z.string().min(2, 'Minimal 2 karakter'),
@@ -21,6 +22,7 @@ export const weddingSchema = z.object({
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan -'),
   theme: z.string(),
   color_scheme: z.string(),
+  cover_photo_url: z.string().optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -188,6 +190,21 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Foto Sampul */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body">
+          <h2 className="font-semibold text-base">Foto Sampul</h2>
+          <p className="text-sm text-base-content/60 mb-2">
+            Foto pasangan yang akan ditampilkan di bagian atas undangan
+          </p>
+          <input type="hidden" {...register('cover_photo_url')} />
+          <CoverPhotoUpload
+            value={watch('cover_photo_url')}
+            onChange={(url) => setValue('cover_photo_url', url)}
+          />
         </div>
       </div>
 
