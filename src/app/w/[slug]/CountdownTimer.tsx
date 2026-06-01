@@ -17,44 +17,65 @@ function calc(target: Date): TimeLeft {
 
 function pad(n: number) { return String(n).padStart(2, '0') }
 
+const LABELS = ['Hari', 'Jam', 'Menit', 'Detik'] as const
+
 export default function CountdownTimer({ date, colors }: { date: string; colors: ColorScheme }) {
-  const [time, setTime] = useState<TimeLeft | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const [time, setTime] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
     const target = new Date(date)
-    setTime(calc(target))
-    const id = setInterval(() => setTime(calc(target)), 1000)
+
+    const update = () => {
+      const t = calc(target)
+      setTime(t)
+    }
+
+    update()
+    setMounted(true)
+    const id = setInterval(update, 1000)
     return () => clearInterval(id)
   }, [date])
 
-  if (!time) return null
+  const skeleton = (
+    <div className="flex justify-center gap-3">
+      {LABELS.map((label) => (
+        <div key={label} className="text-center">
+          <div
+            className="rounded-xl px-3 py-2 min-w-12 text-2xl font-bold tabular-nums"
+            style={{ backgroundColor: colors.primaryLight, color: colors.textDark + '40' }}
+          >
+            --
+          </div>
+          <p className="text-xs mt-1" style={{ color: colors.textMuted }}>{label}</p>
+        </div>
+      ))}
+    </div>
+  )
 
-  const isPast = Object.values(time).every((v) => v === 0)
+  if (!mounted) return skeleton
+
+  const isPast = time.days === 0 && time.hours === 0 && time.minutes === 0 && time.seconds === 0
 
   if (isPast) {
     return (
-      <p className="text-center text-sm font-medium" style={{ color: colors.primary }}>
+      <p className="text-center font-semibold" style={{ color: colors.primary }}>
         🎉 Hari yang ditunggu telah tiba!
       </p>
     )
   }
 
-  const items = [
-    { label: 'Hari', value: time.days },
-    { label: 'Jam', value: time.hours },
-    { label: 'Menit', value: time.minutes },
-    { label: 'Detik', value: time.seconds },
-  ]
+  const values = [time.days, time.hours, time.minutes, time.seconds]
 
   return (
     <div className="flex justify-center gap-3">
-      {items.map(({ label, value }) => (
+      {LABELS.map((label, i) => (
         <div key={label} className="text-center">
           <div
-            className="rounded-xl px-3 py-2 min-w-[3rem] font-mono text-2xl font-bold tabular-nums"
+            className="rounded-xl px-3 py-2 min-w-12 font-mono text-2xl font-bold tabular-nums"
             style={{ backgroundColor: colors.primaryLight, color: colors.textDark }}
           >
-            {label === 'Hari' ? value : pad(value)}
+            {i === 0 ? values[i] : pad(values[i])}
           </div>
           <p className="text-xs mt-1" style={{ color: colors.textMuted }}>{label}</p>
         </div>
