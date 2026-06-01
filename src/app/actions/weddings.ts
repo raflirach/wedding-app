@@ -96,3 +96,17 @@ export async function deleteWedding(id: string): Promise<WeddingActionResult> {
 
   redirect('/dashboard')
 }
+
+export async function togglePublish(id: string, isPublished: boolean): Promise<WeddingActionResult> {
+  const { supabase, user } = await getAuthUser()
+
+  const { error } = await supabase
+    .from('weddings')
+    .update({ is_published: !isPublished, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('user_id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath(`/dashboard/weddings/${id}`)
+}

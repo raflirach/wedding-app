@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { deleteWedding } from '@/app/actions/weddings'
+import { deleteWedding, togglePublish } from '@/app/actions/weddings'
 
 export default async function WeddingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -18,30 +18,32 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
 
   if (!wedding) notFound()
 
-  const { count: guestCount } = await supabase
-    .from('guests')
-    .select('*', { count: 'exact', head: true })
-    .eq('wedding_id', id)
-
-  const { count: rsvpCount } = await supabase
-    .from('guests')
-    .select('*', { count: 'exact', head: true })
-    .eq('wedding_id', id)
-    .eq('rsvp_status', 'attending')
+  const [{ count: guestCount }, { count: rsvpCount }] = await Promise.all([
+    supabase
+      .from('guests')
+      .select('*', { count: 'exact', head: true })
+      .eq('wedding_id', id),
+    supabase
+      .from('guests')
+      .select('*', { count: 'exact', head: true })
+      .eq('wedding_id', id)
+      .eq('rsvp_status', 'attending'),
+  ])
 
   const deleteWithId = deleteWedding.bind(null, id)
+  const toggleWithId = togglePublish.bind(null, id, wedding.is_published)
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">
             {wedding.bride_name} & {wedding.groom_name}
           </h1>
           <p className="text-base-content/60 text-sm mt-1">/w/{wedding.slug}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <Link href={`/dashboard/weddings/${id}/edit`} className="btn btn-outline btn-sm">
             Edit
           </Link>
@@ -52,6 +54,28 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
               onClick={(e) => !confirm('Hapus undangan ini?') && e.preventDefault()}
             >
               Hapus
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Publish toggle */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body flex-row items-center justify-between py-4">
+          <div>
+            <p className="font-medium">Status Undangan</p>
+            <p className="text-sm text-base-content/60">
+              {wedding.is_published
+                ? 'Undangan sudah publik — tamu bisa mengaksesnya'
+                : 'Undangan masih draft — hanya kamu yang bisa melihat'}
+            </p>
+          </div>
+          <form action={toggleWithId}>
+            <button
+              type="submit"
+              className={`btn btn-sm ${wedding.is_published ? 'btn-ghost' : 'btn-primary'}`}
+            >
+              {wedding.is_published ? 'Jadikan Draft' : 'Publikasikan'}
             </button>
           </form>
         </div>
