@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { togglePublish } from '@/app/actions/weddings'
 import DeleteButton from './DeleteButton'
+import SharePanel from './SharePanel'
 
 export default async function WeddingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -117,6 +118,9 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
           Lihat Undangan
         </Link>
       </div>
+
+      {/* Share */}
+      <SharePanel slug={wedding.slug} />
     </div>
   )
 }
