@@ -14,8 +14,8 @@ const WeddingSchema = z.object({
   venue_address: z.string().optional(),
   venue_maps_url: z.string().optional(),
   slug: z.string().min(3, 'Slug minimal 3 karakter.').regex(/^[a-z0-9-]+$/, 'Slug hanya boleh huruf kecil, angka, dan tanda hubung.'),
-  theme: z.string().default('elegant'),
-  color_scheme: z.string().default('blush'),
+  theme: z.string(),
+  color_scheme: z.string(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>

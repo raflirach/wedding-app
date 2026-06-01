@@ -19,8 +19,8 @@ export const weddingSchema = z.object({
   slug: z.string()
     .min(3, 'Minimal 3 karakter')
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan -'),
-  theme: z.string().default('elegant'),
-  color_scheme: z.string().default('blush'),
+  theme: z.string(),
+  color_scheme: z.string(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
