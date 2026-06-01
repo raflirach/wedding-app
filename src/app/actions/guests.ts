@@ -59,18 +59,19 @@ export async function addGuest(
   revalidatePath(`/dashboard/weddings/${weddingId}/guests`)
 }
 
-export async function deleteGuest(weddingId: string, guestId: string) {
+export async function deleteGuest(weddingId: string, guestId: string): Promise<void> {
   const { supabase, user } = await getAuthUser()
 
-  await supabase
-    .from('guests')
-    .delete()
-    .eq('id', guestId)
-    .eq('wedding_id', weddingId)
-    .eq(
-      'wedding_id',
-      supabase.from('weddings').select('id').eq('id', weddingId).eq('user_id', user.id)
-    )
+  const { data: wedding } = await supabase
+    .from('weddings')
+    .select('id')
+    .eq('id', weddingId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (!wedding) return
+
+  await supabase.from('guests').delete().eq('id', guestId).eq('wedding_id', weddingId)
 
   revalidatePath(`/dashboard/weddings/${weddingId}/guests`)
 }

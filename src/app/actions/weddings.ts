@@ -83,7 +83,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
   revalidatePath('/dashboard')
 }
 
-export async function deleteWedding(id: string): Promise<WeddingActionResult> {
+export async function deleteWedding(id: string): Promise<void> {
   const { supabase, user } = await getAuthUser()
 
   const { error } = await supabase
@@ -92,12 +92,12 @@ export async function deleteWedding(id: string): Promise<WeddingActionResult> {
     .eq('id', id)
     .eq('user_id', user.id)
 
-  if (error) return { error: error.message }
+  if (error) throw new Error(error.message)
 
   redirect('/dashboard')
 }
 
-export async function togglePublish(id: string, isPublished: boolean): Promise<WeddingActionResult> {
+export async function togglePublish(id: string, isPublished: boolean): Promise<void> {
   const { supabase, user } = await getAuthUser()
 
   const { error } = await supabase
@@ -106,7 +106,7 @@ export async function togglePublish(id: string, isPublished: boolean): Promise<W
     .eq('id', id)
     .eq('user_id', user.id)
 
-  if (error) return { error: error.message }
+  if (error) throw new Error(error.message)
 
   revalidatePath(`/dashboard/weddings/${id}`)
 }
