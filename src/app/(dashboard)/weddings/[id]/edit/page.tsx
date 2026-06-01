@@ -38,6 +38,8 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           venue_address: wedding.venue_address ?? undefined,
           venue_maps_url: wedding.venue_maps_url ?? undefined,
           slug: wedding.slug,
+          theme: wedding.theme ?? 'elegant',
+          color_scheme: wedding.color_scheme ?? 'blush',
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"
