@@ -20,13 +20,24 @@ export default async function WishesPage({ params }: { params: Promise<{ id: str
   if (!wedding) notFound()
 
   const admin = createAdminClient()
-  const { data: wishes } = await admin
+  const { data: wishes, error: wishError } = await admin
     .from('wishes')
     .select('id, name, message, created_at, is_hidden')
     .eq('wedding_id', id)
     .order('created_at', { ascending: false })
 
-  const all = wishes ?? []
+  // Fallback jika kolom is_hidden belum ada (migration belum dijalankan)
+  let all: { id: string; name: string; message: string; created_at: string; is_hidden: boolean }[] = []
+  if (wishError) {
+    const { data: fallback } = await admin
+      .from('wishes')
+      .select('id, name, message, created_at')
+      .eq('wedding_id', id)
+      .order('created_at', { ascending: false })
+    all = (fallback ?? []).map((w) => ({ ...w, is_hidden: false }))
+  } else {
+    all = (wishes ?? []).map((w) => ({ ...w, is_hidden: w.is_hidden ?? false }))
+  }
   const visible = all.filter((w) => !w.is_hidden).length
   const hidden = all.filter((w) => w.is_hidden).length
 
