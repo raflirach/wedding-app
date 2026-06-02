@@ -1,15 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/admin'
-
-function createPublicClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 const AttendanceSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.'),
@@ -32,22 +24,23 @@ export async function submitAttendance(
 
   if (!result.success) return { error: result.error.issues[0].message }
 
-  const supabase = createPublicClient()
+  const admin = createAdminClient()
 
-  const { error } = await supabase.from('guests').insert({
+  const { error } = await admin.from('guests').insert({
     wedding_id: weddingId,
     name: result.data.name,
     rsvp_status: result.data.rsvp_status,
   })
 
-  if (error) return { error: error.message }
+  if (error) return { error: 'Gagal menyimpan konfirmasi. Coba lagi.' }
 
   if (result.data.message?.trim()) {
-    const admin = createAdminClient()
     await admin.from('wishes').insert({
       wedding_id: weddingId,
       name: result.data.name,
       message: result.data.message.trim(),
+    }).then(({ error: e }) => {
+      if (e) console.error('Wish insert failed:', e.message)
     })
   }
 
