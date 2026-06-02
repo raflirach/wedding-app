@@ -12,7 +12,14 @@ import Particles from '../Particles'
 
 export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
-    <main style={{ backgroundColor: colors.bg, minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+    <main style={{
+      backgroundColor: colors.bg,
+      minHeight: '100vh',
+      position: 'relative',
+      zIndex: 1,
+      backgroundImage: `radial-gradient(circle, ${colors.accent}1A 1px, transparent 1px)`,
+      backgroundSize: '20px 20px',
+    }}>
       <Particles variant="elegant" colors={colors} />
       <style>{`
         @keyframes el-fade-up {

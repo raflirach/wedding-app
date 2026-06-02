@@ -11,7 +11,11 @@ import Particles from '../Particles'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
-    <main className="min-h-screen bg-white" style={{ position: 'relative', zIndex: 1 }}>
+    <main className="min-h-screen bg-white" style={{
+      position: 'relative',
+      zIndex: 1,
+      backgroundImage: `repeating-linear-gradient(45deg, ${colors.primary}12 0, ${colors.primary}12 1px, transparent 0, transparent 9px)`,
+    }}>
       <Particles variant="modern" colors={colors} />
       <style>{`
         @keyframes mo-slide-down {
