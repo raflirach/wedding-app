@@ -4,6 +4,8 @@ import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
 import GiftSection from './GiftSection'
 import EventSection from './EventSection'
+import OurStorySection from './OurStorySection'
+import TimelineSection from './TimelineSection'
 
 export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -101,7 +103,11 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
         colors={colors}
       />
 
+      <OurStorySection items={wedding.love_story ?? []} colors={colors} />
+
       <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>✦ ✦ ✦</div>
+
+      <TimelineSection items={wedding.timeline ?? []} colors={colors} />
 
       <GallerySection photos={photos} colors={colors} />
 

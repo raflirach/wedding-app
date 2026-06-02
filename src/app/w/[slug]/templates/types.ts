@@ -1,5 +1,17 @@
 import type { ColorScheme } from '@/lib/templates'
 
+export type TimelineItem = {
+  time: string
+  title: string
+  description?: string
+}
+
+export type StoryMilestone = {
+  date: string
+  title: string
+  description?: string
+}
+
 export type WeddingData = {
   bride_name: string
   groom_name: string
@@ -27,6 +39,8 @@ export type WeddingData = {
   bank_2_name: string | null
   bank_2_account_name: string | null
   bank_2_account_number: string | null
+  timeline: TimelineItem[] | null
+  love_story: StoryMilestone[] | null
 }
 
 export type Wish = {

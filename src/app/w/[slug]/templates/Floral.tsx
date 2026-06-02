@@ -4,6 +4,8 @@ import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
 import GiftSection from './GiftSection'
 import EventSection from './EventSection'
+import OurStorySection from './OurStorySection'
+import TimelineSection from './TimelineSection'
 
 export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -110,7 +112,11 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
         decorator={<p className="text-2xl mb-3 select-none">🌿</p>}
       />
 
+      <OurStorySection items={wedding.love_story ?? []} colors={colors} />
+
       <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
+
+      <TimelineSection items={wedding.timeline ?? []} colors={colors} />
 
       <GallerySection photos={photos} colors={colors} />
 

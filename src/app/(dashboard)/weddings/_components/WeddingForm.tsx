@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Link from 'next/link'
@@ -41,6 +41,16 @@ export const weddingSchema = z.object({
   bank_2_name: z.string().optional(),
   bank_2_account_name: z.string().optional(),
   bank_2_account_number: z.string().optional(),
+  timeline: z.array(z.object({
+    time: z.string(),
+    title: z.string().min(1, 'Judul wajib diisi'),
+    description: z.string().optional(),
+  })).optional(),
+  love_story: z.array(z.object({
+    date: z.string(),
+    title: z.string().min(1, 'Judul wajib diisi'),
+    description: z.string().optional(),
+  })).optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -64,15 +74,23 @@ type Props = {
 export default function WeddingForm({ defaultValues, onSubmit, submitLabel, cancelHref }: Props) {
   const [serverError, setServerError] = useState<string>()
 
-  const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } =
+  const { register, handleSubmit, setValue, watch, control, formState: { errors, isSubmitting } } =
     useForm<WeddingFormValues>({
       resolver: zodResolver(weddingSchema),
       defaultValues: {
         theme: 'elegant',
         color_scheme: 'blush',
+        timeline: [],
+        love_story: [],
         ...defaultValues,
       },
     })
+
+  const { fields: timelineFields, append: appendTimeline, remove: removeTimeline } =
+    useFieldArray({ control, name: 'timeline' })
+
+  const { fields: storyFields, append: appendStory, remove: removeStory } =
+    useFieldArray({ control, name: 'love_story' })
 
   const brideName = watch('bride_name', '')
   const groomName = watch('groom_name', '')
@@ -318,6 +336,82 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
             value={watch('music_url')}
             onChange={(url) => setValue('music_url', url)}
           />
+        </div>
+      </div>
+
+      {/* Our Story */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body space-y-4">
+          <div>
+            <h2 className="font-semibold text-base">Perjalanan Cinta</h2>
+            <p className="text-sm text-base-content/60 mt-1">Cerita singkat perjalanan kalian — tampil di undangan</p>
+          </div>
+          {storyFields.map((field, i) => (
+            <div key={field.id} className="border border-base-300 rounded-xl p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="form-control">
+                  <label className="label"><span className="label-text text-xs">Tahun / Tanggal</span></label>
+                  <input {...register(`love_story.${i}.date`)} type="text" placeholder="2020 / 14 Feb 2021" className="input input-bordered input-sm" />
+                </div>
+                <div className="form-control">
+                  <label className="label"><span className="label-text text-xs">Judul Momen</span></label>
+                  <input {...register(`love_story.${i}.title`)} type="text" placeholder="Pertama Bertemu" className="input input-bordered input-sm" />
+                </div>
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text text-xs">Cerita singkat (opsional)</span></label>
+                <textarea {...register(`love_story.${i}.description`)} rows={2} placeholder="Kami pertama kali bertemu di..." className="textarea textarea-bordered textarea-sm" />
+              </div>
+              <button type="button" onClick={() => removeStory(i)} className="btn btn-ghost btn-xs text-error">
+                Hapus
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => appendStory({ date: '', title: '', description: '' })}
+            className="btn btn-outline btn-sm w-full"
+          >
+            + Tambah Momen
+          </button>
+        </div>
+      </div>
+
+      {/* Timeline / Rundown Acara */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body space-y-4">
+          <div>
+            <h2 className="font-semibold text-base">Rundown Acara</h2>
+            <p className="text-sm text-base-content/60 mt-1">Jadwal rangkaian acara — tampil di undangan</p>
+          </div>
+          {timelineFields.map((field, i) => (
+            <div key={field.id} className="border border-base-300 rounded-xl p-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="form-control">
+                  <label className="label"><span className="label-text text-xs">Pukul</span></label>
+                  <input {...register(`timeline.${i}.time`)} type="text" placeholder="08:00" className="input input-bordered input-sm" />
+                </div>
+                <div className="form-control">
+                  <label className="label"><span className="label-text text-xs">Nama Acara</span></label>
+                  <input {...register(`timeline.${i}.title`)} type="text" placeholder="Akad Nikah" className="input input-bordered input-sm" />
+                </div>
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text text-xs">Keterangan (opsional)</span></label>
+                <input {...register(`timeline.${i}.description`)} type="text" placeholder="Masjid Al-Ikhlas" className="input input-bordered input-sm" />
+              </div>
+              <button type="button" onClick={() => removeTimeline(i)} className="btn btn-ghost btn-xs text-error">
+                Hapus
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => appendTimeline({ time: '', title: '', description: '' })}
+            className="btn btn-outline btn-sm w-full"
+          >
+            + Tambah Acara
+          </button>
         </div>
       </div>
 

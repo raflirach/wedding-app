@@ -4,6 +4,8 @@ import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
 import GiftSection from './GiftSection'
 import EventSection from './EventSection'
+import OurStorySection from './OurStorySection'
+import TimelineSection from './TimelineSection'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -130,9 +132,13 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
         </section>
       )}
 
+      <OurStorySection items={wedding.love_story ?? []} colors={colors} />
+
       <div className="max-w-lg mx-auto px-6">
         <div className="h-px" style={{ backgroundColor: colors.primaryLight }} />
       </div>
+
+      <TimelineSection items={wedding.timeline ?? []} colors={colors} />
 
       <GallerySection photos={photos} colors={colors} />
 
