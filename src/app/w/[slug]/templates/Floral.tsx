@@ -8,10 +8,12 @@ import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { FloralDivider } from './Ornaments'
+import Particles from '../Particles'
 
 export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
-    <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
+    <main style={{ backgroundColor: colors.bg, minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <Particles variant="floral" colors={colors} />
       <style>{`
         @keyframes fl-float-up {
           from { opacity: 0; transform: translateY(28px); }

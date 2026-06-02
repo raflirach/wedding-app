@@ -8,10 +8,12 @@ import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { WeddingRings, ElegantDivider } from './Ornaments'
+import Particles from '../Particles'
 
 export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
-    <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
+    <main style={{ backgroundColor: colors.bg, minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <Particles variant="elegant" colors={colors} />
       <style>{`
         @keyframes el-fade-up {
           from { opacity: 0; transform: translateY(22px); }

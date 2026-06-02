@@ -7,10 +7,12 @@ import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { ModernDivider } from './Ornaments'
+import Particles from '../Particles'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white" style={{ position: 'relative', zIndex: 1 }}>
+      <Particles variant="modern" colors={colors} />
       <style>{`
         @keyframes mo-slide-down {
           from { opacity: 0; transform: translateY(-30px); }
