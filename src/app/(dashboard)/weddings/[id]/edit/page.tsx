@@ -46,6 +46,7 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           bride_parents: wedding.bride_parents ?? undefined,
           groom_parents: wedding.groom_parents ?? undefined,
           opening_text: wedding.opening_text ?? undefined,
+          music_url: wedding.music_url ?? undefined,
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"

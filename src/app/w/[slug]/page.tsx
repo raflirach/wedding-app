@@ -1,11 +1,15 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { getTemplate, getColorScheme } from '@/lib/templates'
 import ElegantTemplate from './templates/Elegant'
 import ModernTemplate from './templates/Modern'
 import FloralTemplate from './templates/Floral'
 import RsvpForm from './RsvpForm'
+import WishForm from './WishForm'
+import WishesDisplay from './WishesDisplay'
+import MusicPlayer from './MusicPlayer'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -23,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Undangan ${data.bride_name} & ${data.groom_name}`,
     description: data.wedding_date
-      ? `${new Date(data.wedding_date).toLocaleDateString('id-ID', { dateStyle: 'long' })}`
+      ? new Date(data.wedding_date).toLocaleDateString('id-ID', { dateStyle: 'long' })
       : `Undangan pernikahan ${data.bride_name} & ${data.groom_name}`,
   }
 }
@@ -46,16 +50,31 @@ export default async function InvitationPage({ params }: Props) {
 
   if (!wedding) notFound()
 
+  const admin = createAdminClient()
+  const { data: wishes } = await admin
+    .from('wishes')
+    .select('id, name, message, created_at')
+    .eq('wedding_id', wedding.id)
+    .order('created_at', { ascending: false })
+
   const templateId = getTemplate(wedding.theme ?? 'elegant')
   const colors = getColorScheme(wedding.color_scheme ?? 'blush')
   const Template = TEMPLATE_MAP[templateId]
 
   return (
-    <Template
-      wedding={wedding}
-      colors={colors}
-      RsvpForm={RsvpForm}
-      weddingId={wedding.id}
-    />
+    <>
+      <Template
+        wedding={wedding}
+        colors={colors}
+        RsvpForm={RsvpForm}
+        WishFormComponent={WishForm}
+        WishesDisplayComponent={WishesDisplay}
+        wishes={wishes ?? []}
+        weddingId={wedding.id}
+      />
+      {wedding.music_url && (
+        <MusicPlayer url={wedding.music_url} colors={colors} />
+      )}
+    </>
   )
 }

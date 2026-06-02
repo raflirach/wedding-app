@@ -8,7 +8,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }: TemplateProps) {
+export default function FloralTemplate({ wedding, colors, RsvpForm, WishFormComponent, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -134,6 +134,21 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
           </p>
         </div>
         <RsvpForm weddingId={weddingId} />
+      </section>
+
+      {/* Ucapan */}
+      <section className="py-10 px-4 max-w-md mx-auto">
+        <div className="text-center mb-6">
+          <p className="text-xs tracking-[0.3em] uppercase" style={{ color: colors.textMuted }}>
+            Ucapan & Doa
+          </p>
+        </div>
+        <WishFormComponent weddingId={weddingId} colors={colors} />
+        {wishes.length > 0 && (
+          <div className="mt-6">
+            <WishesDisplayComponent wishes={wishes} colors={colors} />
+          </div>
+        )}
       </section>
 
       <div className="text-center pb-6 pt-2 text-2xl select-none" style={{ color: colors.accent }}>❧ ✾ ❧</div>

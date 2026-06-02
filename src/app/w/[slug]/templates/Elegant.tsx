@@ -8,7 +8,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }: TemplateProps) {
+export default function ElegantTemplate({ wedding, colors, RsvpForm, WishFormComponent, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -122,6 +122,21 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }
           </p>
         </div>
         <RsvpForm weddingId={weddingId} />
+      </section>
+
+      {/* Ucapan & Doa */}
+      <section className="py-12 px-4 max-w-md mx-auto">
+        <div className="text-center mb-6">
+          <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: colors.textMuted }}>
+            Ucapan & Doa
+          </p>
+        </div>
+        <WishFormComponent weddingId={weddingId} colors={colors} />
+        {wishes.length > 0 && (
+          <div className="mt-6">
+            <WishesDisplayComponent wishes={wishes} colors={colors} />
+          </div>
+        )}
       </section>
 
       <footer className="py-8 text-center text-xs border-t" style={{ color: colors.accent + '80', borderColor: colors.accent + '30' }}>

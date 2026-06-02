@@ -28,6 +28,7 @@ export const weddingSchema = z.object({
   bride_parents: z.string().optional(),
   groom_parents: z.string().optional(),
   opening_text: z.string().optional(),
+  music_url: z.string().optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -258,6 +259,27 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
             value={watch('cover_photo_url')}
             onChange={(url) => setValue('cover_photo_url', url)}
           />
+        </div>
+      </div>
+
+      {/* Musik */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body">
+          <h2 className="font-semibold text-base">Musik Latar</h2>
+          <p className="text-sm text-base-content/60 mb-2">
+            Link file MP3 langsung untuk diputar di halaman undangan
+          </p>
+          <input
+            {...register('music_url')}
+            type="url"
+            placeholder="https://example.com/lagu.mp3"
+            className="input input-bordered w-full"
+          />
+          <label className="label">
+            <span className="label-text-alt text-base-content/40">
+              Pastikan link bisa diakses langsung (bukan halaman web)
+            </span>
+          </label>
         </div>
       </div>
 

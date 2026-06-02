@@ -22,6 +22,7 @@ const WeddingSchema = z.object({
   bride_parents: z.string().optional(),
   groom_parents: z.string().optional(),
   opening_text: z.string().optional(),
+  music_url: z.string().optional(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>
@@ -57,6 +58,7 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
       bride_parents: result.data.bride_parents || null,
       groom_parents: result.data.groom_parents || null,
       opening_text: result.data.opening_text || null,
+      music_url: result.data.music_url || null,
       user_id: user.id,
     })
     .select('id')
@@ -93,6 +95,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
       bride_parents: result.data.bride_parents || null,
       groom_parents: result.data.groom_parents || null,
       opening_text: result.data.opening_text || null,
+      music_url: result.data.music_url || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)
