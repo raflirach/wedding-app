@@ -2,8 +2,8 @@ import { notFound, redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { deletePhoto } from '@/app/actions/gallery'
 import PhotoUploader from './PhotoUploader'
+import DeletePhotoButton from './DeletePhotoButton'
 
 export default async function GalleryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -38,32 +38,20 @@ export default async function GalleryPage({ params }: { params: Promise<{ id: st
 
       {list.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {list.map((photo) => {
-            const deleteWithIds = deletePhoto.bind(null, id, photo.id)
-            return (
-              <div key={photo.id} className="relative group aspect-square rounded-xl overflow-hidden">
-                <Image
-                  src={photo.url}
-                  alt="Gallery"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-                <form
-                  action={deleteWithIds}
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <button
-                    type="submit"
-                    className="btn btn-error btn-circle btn-xs"
-                    onClick={(e) => !confirm('Hapus foto ini?') && e.preventDefault()}
-                  >
-                    ✕
-                  </button>
-                </form>
+          {list.map((photo) => (
+            <div key={photo.id} className="relative group aspect-square rounded-xl overflow-hidden">
+              <Image
+                src={photo.url}
+                alt="Gallery"
+                fill
+                className="object-cover"
+                unoptimized
+              />
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <DeletePhotoButton weddingId={id} photoId={photo.id} />
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       ) : (
         <div className="card bg-base-100 shadow">
