@@ -18,6 +18,13 @@ const STATUS_LABELS: Record<string, { label: string; badge: string }> = {
   not_attending: { label: 'Tidak Hadir', badge: 'badge-error' },
 }
 
+function toWaPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '')
+  if (digits.startsWith('62')) return digits
+  if (digits.startsWith('0')) return '62' + digits.slice(1)
+  return digits
+}
+
 function CopyLinkButton({ slug, guestName }: { slug: string; guestName: string }) {
   const [copied, setCopied] = useState(false)
 
@@ -30,12 +37,49 @@ function CopyLinkButton({ slug, guestName }: { slug: string; guestName: string }
   }
 
   return (
-    <button
-      type="button"
-      onClick={copy}
-      className="btn btn-ghost btn-xs text-info"
-    >
+    <button type="button" onClick={copy} className="btn btn-ghost btn-xs text-info">
       {copied ? 'Tersalin!' : 'Salin Link'}
+    </button>
+  )
+}
+
+function WhatsAppButton({
+  slug, guestName, phone, brideName, groomName, weddingDate,
+}: {
+  slug: string
+  guestName: string
+  phone: string | null
+  brideName: string
+  groomName: string
+  weddingDate: string | null
+}) {
+  function open() {
+    const inviteUrl = `${window.location.origin}/w/${slug}?to=${encodeURIComponent(guestName)}`
+    const dateStr = weddingDate
+      ? new Date(weddingDate).toLocaleDateString('id-ID', { dateStyle: 'long' })
+      : ''
+
+    const lines = [
+      `Halo ${guestName} 👋`,
+      '',
+      'Kami mengundang kehadiran Bapak/Ibu/Saudara/i dalam acara pernikahan:',
+      '',
+      `*${brideName} & ${groomName}*`,
+      dateStr ? `📅 ${dateStr}` : '',
+      '',
+      `Buka undangan lengkap di:\n${inviteUrl}`,
+      '',
+      'Mohon konfirmasi kehadiran melalui link undangan. Terima kasih 🙏',
+    ].filter(Boolean)
+
+    const text = encodeURIComponent(lines.join('\n'))
+    const waPhone = phone ? toWaPhone(phone) : ''
+    window.open(`https://wa.me/${waPhone}?text=${text}`, '_blank', 'noopener,noreferrer')
+  }
+
+  return (
+    <button type="button" onClick={open} className="btn btn-ghost btn-xs text-success">
+      WA
     </button>
   )
 }
@@ -45,11 +89,17 @@ export default function GuestList({
   weddingId,
   slug,
   pending,
+  brideName,
+  groomName,
+  weddingDate,
 }: {
   guests: Guest[]
   weddingId: string
   slug: string
   pending: number
+  brideName: string
+  groomName: string
+  weddingDate: string | null
 }) {
   if (guests.length === 0) {
     return (
@@ -112,6 +162,14 @@ export default function GuestList({
                     </td>
                     <td>
                       <div className="flex gap-1">
+                        <WhatsAppButton
+                          slug={slug}
+                          guestName={guest.name}
+                          phone={guest.phone}
+                          brideName={brideName}
+                          groomName={groomName}
+                          weddingDate={weddingDate}
+                        />
                         <CopyLinkButton slug={slug} guestName={guest.name} />
                         <form action={deleteWithIds}>
                           <button

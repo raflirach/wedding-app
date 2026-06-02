@@ -13,7 +13,7 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
 
   const { data: wedding } = await supabase
     .from('weddings')
-    .select('id, bride_name, groom_name, slug')
+    .select('id, bride_name, groom_name, slug, wedding_date')
     .eq('id', id)
     .eq('user_id', user.id)
     .single()
@@ -73,7 +73,15 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
       <AddGuestForm weddingId={id} />
 
       {/* Guest List */}
-      <GuestList guests={all} weddingId={id} slug={wedding.slug} pending={pending} />
+      <GuestList
+        guests={all}
+        weddingId={id}
+        slug={wedding.slug}
+        pending={pending}
+        brideName={wedding.bride_name}
+        groomName={wedding.groom_name}
+        weddingDate={wedding.wedding_date ?? null}
+      />
     </div>
   )
 }
