@@ -18,6 +18,11 @@ export const weddingSchema = z.object({
   venue_name: z.string().optional(),
   venue_address: z.string().optional(),
   venue_maps_url: z.string().optional(),
+  akad_date: z.string().optional(),
+  akad_time: z.string().optional(),
+  akad_venue_name: z.string().optional(),
+  akad_venue_address: z.string().optional(),
+  akad_venue_maps_url: z.string().optional(),
   slug: z.string()
     .min(3, 'Minimal 3 karakter')
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan -'),
@@ -171,10 +176,42 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
         </div>
       </div>
 
-      {/* Waktu & Tempat */}
+      {/* Akad Nikah */}
       <div className="card bg-base-100 shadow">
         <div className="card-body space-y-4">
-          <h2 className="font-semibold text-base">Waktu & Tempat</h2>
+          <div>
+            <h2 className="font-semibold text-base">Akad Nikah</h2>
+            <p className="text-sm text-base-content/60 mt-1">Kosongkan jika tidak ada acara akad terpisah</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="form-control">
+              <label className="label" htmlFor="akad_date"><span className="label-text">Tanggal</span></label>
+              <input id="akad_date" {...register('akad_date')} type="date" className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="akad_time"><span className="label-text">Waktu</span></label>
+              <input id="akad_time" {...register('akad_time')} type="time" className="input input-bordered" />
+            </div>
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="akad_venue_name"><span className="label-text">Nama Tempat</span></label>
+            <input id="akad_venue_name" {...register('akad_venue_name')} type="text" placeholder="Masjid Al-Ikhlas / Rumah Mempelai" className="input input-bordered" />
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="akad_venue_address"><span className="label-text">Alamat</span></label>
+            <textarea id="akad_venue_address" {...register('akad_venue_address')} placeholder="Alamat lengkap..." className="textarea textarea-bordered" rows={2} />
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="akad_venue_maps_url"><span className="label-text">Link Google Maps</span></label>
+            <input id="akad_venue_maps_url" {...register('akad_venue_maps_url')} type="url" placeholder="https://maps.google.com/..." className="input input-bordered" />
+          </div>
+        </div>
+      </div>
+
+      {/* Resepsi */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body space-y-4">
+          <h2 className="font-semibold text-base">Resepsi</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="form-control">
               <label className="label" htmlFor="wedding_date"><span className="label-text">Tanggal</span></label>

@@ -3,12 +3,7 @@ import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
 import GiftSection from './GiftSection'
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('id-ID', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-  })
-}
+import EventSection from './EventSection'
 
 export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -84,44 +79,36 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
         )}
       </section>
 
-      {/* Date + Countdown */}
-      {wedding.wedding_date && (
-        <section className="py-8 px-4 max-w-sm mx-auto text-center space-y-6">
-          <div className="rounded-2xl p-8 border-2" style={{ borderColor: colors.accent + '50', backgroundColor: colors.primaryLight }}>
-            <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>
-              Insya Allah Akan Dilangsungkan
-            </p>
-            <p className="text-xl font-semibold" style={{ color: colors.textDark }}>
-              {formatDate(wedding.wedding_date)}
-            </p>
-            {wedding.wedding_time && (
-              <p className="mt-1" style={{ color: colors.primary }}>
-                Pukul {wedding.wedding_time.slice(0, 5)} WIB
-              </p>
-            )}
-          </div>
-          <CountdownTimer date={wedding.wedding_date} colors={colors} />
+      {/* Countdown — ke tanggal terdekat */}
+      {(wedding.akad_date || wedding.wedding_date) && (
+        <section className="py-8 px-4 max-w-sm mx-auto text-center">
+          <CountdownTimer date={(wedding.akad_date || wedding.wedding_date)!} colors={colors} />
         </section>
       )}
 
-      {/* Venue */}
-      {wedding.venue_name && (
-        <section className="py-8 px-4 max-w-sm mx-auto text-center">
-          <p className="text-2xl mb-2 select-none">🌿</p>
-          <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: colors.textMuted }}>Bertempat di</p>
-          <p className="text-xl font-semibold" style={{ color: colors.textDark }}>{wedding.venue_name}</p>
-          {wedding.venue_address && (
-            <p className="mt-1 text-sm" style={{ color: colors.textMuted }}>{wedding.venue_address}</p>
-          )}
-          {wedding.venue_maps_url && (
-            <a href={wedding.venue_maps_url} target="_blank" rel="noopener noreferrer"
-              className="inline-block mt-3 px-5 py-2 rounded-full text-sm font-medium text-white"
-              style={{ backgroundColor: colors.primary }}>
-              Petunjuk Arah
-            </a>
-          )}
-        </section>
-      )}
+      {/* Akad Nikah */}
+      <EventSection
+        label="Akad Nikah"
+        date={wedding.akad_date}
+        time={wedding.akad_time}
+        venueName={wedding.akad_venue_name}
+        venueAddress={wedding.akad_venue_address}
+        venueMapsUrl={wedding.akad_venue_maps_url}
+        colors={colors}
+        decorator={<p className="text-2xl mb-3 select-none">🌿</p>}
+      />
+
+      {/* Resepsi */}
+      <EventSection
+        label="Resepsi"
+        date={wedding.wedding_date}
+        time={wedding.wedding_time}
+        venueName={wedding.venue_name}
+        venueAddress={wedding.venue_address}
+        venueMapsUrl={wedding.venue_maps_url}
+        colors={colors}
+        decorator={<p className="text-2xl mb-3 select-none">🌿</p>}
+      />
 
       <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
 

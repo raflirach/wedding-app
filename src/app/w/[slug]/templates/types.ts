@@ -16,6 +16,11 @@ export type WeddingData = {
   cover_photo_url: string | null
   music_url: string | null
   slug: string
+  akad_date: string | null
+  akad_time: string | null
+  akad_venue_name: string | null
+  akad_venue_address: string | null
+  akad_venue_maps_url: string | null
   bank_1_name: string | null
   bank_1_account_name: string | null
   bank_1_account_number: string | null

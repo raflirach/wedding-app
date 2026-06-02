@@ -3,12 +3,7 @@ import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
 import GiftSection from './GiftSection'
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('id-ID', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-  })
-}
+import EventSection from './EventSection'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -73,42 +68,60 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
         </section>
       )}
 
-      {/* Date strip */}
-      {wedding.wedding_date && (
-        <div className="py-5 px-4 text-center" style={{ backgroundColor: colors.primary }}>
-          <p className="text-white font-bold text-lg tracking-wide">
-            {formatDate(wedding.wedding_date)}
-            {wedding.wedding_time && (
-              <span className="font-normal opacity-80 ml-3 text-base">
-                · {wedding.wedding_time.slice(0, 5)} WIB
-              </span>
-            )}
-          </p>
-        </div>
-      )}
-
-      {/* Countdown */}
-      {wedding.wedding_date && (
+      {/* Countdown — ke tanggal terdekat */}
+      {(wedding.akad_date || wedding.wedding_date) && (
         <div className="py-8 px-4" style={{ backgroundColor: colors.primaryLight }}>
-          <CountdownTimer date={wedding.wedding_date} colors={colors} />
+          <p className="text-xs font-bold tracking-[0.4em] uppercase text-center mb-4" style={{ color: colors.primary }}>
+            Menuju Hari Bahagia
+          </p>
+          <CountdownTimer date={(wedding.akad_date || wedding.wedding_date)!} colors={colors} />
         </div>
       )}
 
-      {/* Venue */}
-      {wedding.venue_name && (
-        <section className="py-14 px-6 max-w-lg mx-auto">
+      {/* Akad Nikah */}
+      {(wedding.akad_date || wedding.akad_venue_name) && (
+        <section className="py-10 px-6 max-w-lg mx-auto">
           <div className="flex gap-4">
             <div className="w-1 rounded-full shrink-0" style={{ backgroundColor: colors.primary }} />
             <div>
-              <p className="text-xs font-bold tracking-[0.3em] uppercase mb-1" style={{ color: colors.primary }}>
-                Lokasi
-              </p>
-              <p className="text-2xl font-bold text-gray-900">{wedding.venue_name}</p>
-              {wedding.venue_address && <p className="mt-1 text-gray-500 text-sm">{wedding.venue_address}</p>}
+              <p className="text-xs font-bold tracking-[0.3em] uppercase mb-1" style={{ color: colors.primary }}>Akad Nikah</p>
+              {wedding.akad_date && (
+                <p className="text-lg font-bold text-gray-900">
+                  {new Date(wedding.akad_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                  {wedding.akad_time && <span className="font-normal text-gray-500 ml-2 text-sm">· {wedding.akad_time.slice(0, 5)} WIB</span>}
+                </p>
+              )}
+              {wedding.akad_venue_name && <p className="mt-1 font-semibold text-gray-800">{wedding.akad_venue_name}</p>}
+              {wedding.akad_venue_address && <p className="mt-0.5 text-gray-500 text-sm">{wedding.akad_venue_address}</p>}
+              {wedding.akad_venue_maps_url && (
+                <a href={wedding.akad_venue_maps_url} target="_blank" rel="noopener noreferrer"
+                  className="inline-block mt-2 text-sm font-bold underline underline-offset-4" style={{ color: colors.primary }}>
+                  Buka di Maps →
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Resepsi */}
+      {(wedding.wedding_date || wedding.venue_name) && (
+        <section className="py-10 px-6 max-w-lg mx-auto">
+          <div className="flex gap-4">
+            <div className="w-1 rounded-full shrink-0" style={{ backgroundColor: colors.primary }} />
+            <div>
+              <p className="text-xs font-bold tracking-[0.3em] uppercase mb-1" style={{ color: colors.primary }}>Resepsi</p>
+              {wedding.wedding_date && (
+                <p className="text-lg font-bold text-gray-900">
+                  {new Date(wedding.wedding_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                  {wedding.wedding_time && <span className="font-normal text-gray-500 ml-2 text-sm">· {wedding.wedding_time.slice(0, 5)} WIB</span>}
+                </p>
+              )}
+              {wedding.venue_name && <p className="mt-1 font-semibold text-gray-800">{wedding.venue_name}</p>}
+              {wedding.venue_address && <p className="mt-0.5 text-gray-500 text-sm">{wedding.venue_address}</p>}
               {wedding.venue_maps_url && (
                 <a href={wedding.venue_maps_url} target="_blank" rel="noopener noreferrer"
-                  className="inline-block mt-3 text-sm font-bold underline underline-offset-4"
-                  style={{ color: colors.primary }}>
+                  className="inline-block mt-2 text-sm font-bold underline underline-offset-4" style={{ color: colors.primary }}>
                   Buka di Maps →
                 </a>
               )}

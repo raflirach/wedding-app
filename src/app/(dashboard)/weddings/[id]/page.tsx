@@ -92,19 +92,43 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
 
       {/* Detail */}
       <div className="card bg-base-100 shadow">
-        <div className="card-body space-y-3">
+        <div className="card-body space-y-4">
           <h2 className="font-semibold">Detail Acara</h2>
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <span className="text-base-content/60">Tanggal</span>
-            <span>{wedding.wedding_date
-              ? new Date(wedding.wedding_date).toLocaleDateString('id-ID', { dateStyle: 'long' })
-              : '—'}</span>
-            <span className="text-base-content/60">Waktu</span>
-            <span>{wedding.wedding_time ?? '—'}</span>
-            <span className="text-base-content/60">Venue</span>
-            <span>{wedding.venue_name ?? '—'}</span>
-            <span className="text-base-content/60">Alamat</span>
-            <span>{wedding.venue_address ?? '—'}</span>
+
+          {/* Akad */}
+          {(wedding.akad_date || wedding.akad_venue_name) && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold tracking-widest uppercase text-base-content/40">Akad Nikah</p>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <span className="text-base-content/60">Tanggal</span>
+                <span>{wedding.akad_date
+                  ? new Date(wedding.akad_date).toLocaleDateString('id-ID', { dateStyle: 'long' })
+                  : '—'}</span>
+                <span className="text-base-content/60">Waktu</span>
+                <span>{wedding.akad_time ?? '—'}</span>
+                <span className="text-base-content/60">Tempat</span>
+                <span>{wedding.akad_venue_name ?? '—'}</span>
+              </div>
+            </div>
+          )}
+
+          {(wedding.akad_date || wedding.akad_venue_name) && <div className="divider my-0" />}
+
+          {/* Resepsi */}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold tracking-widest uppercase text-base-content/40">Resepsi</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <span className="text-base-content/60">Tanggal</span>
+              <span>{wedding.wedding_date
+                ? new Date(wedding.wedding_date).toLocaleDateString('id-ID', { dateStyle: 'long' })
+                : '—'}</span>
+              <span className="text-base-content/60">Waktu</span>
+              <span>{wedding.wedding_time ?? '—'}</span>
+              <span className="text-base-content/60">Venue</span>
+              <span>{wedding.venue_name ?? '—'}</span>
+              <span className="text-base-content/60">Alamat</span>
+              <span>{wedding.venue_address ?? '—'}</span>
+            </div>
           </div>
         </div>
       </div>
