@@ -24,7 +24,13 @@ function BankCard({ bankName, accountName, accountNumber, colors }: BankCardProp
   return (
     <div
       className="rounded-2xl p-5 border text-center space-y-1"
-      style={{ borderColor: colors.accent + '40', backgroundColor: '#ffffff70' }}
+      style={{
+        background: 'rgba(255, 255, 255, 0.42)',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        border: '1px solid rgba(255, 255, 255, 0.65)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.7)',
+      }}
     >
       <p className="text-xs tracking-widest uppercase font-semibold" style={{ color: colors.primary }}>
         {bankName}

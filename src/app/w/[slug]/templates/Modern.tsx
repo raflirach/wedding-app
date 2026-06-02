@@ -6,6 +6,7 @@ import GiftSection from './GiftSection'
 import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
+import { ModernDivider } from './Ornaments'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -173,9 +174,7 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
         <OurStorySection items={wedding.love_story ?? []} colors={colors} />
       </AnimatedSection>
 
-      <div className="max-w-lg mx-auto px-6">
-        <div className="h-px" style={{ backgroundColor: colors.primaryLight }} />
-      </div>
+      <div className="py-6 px-4"><ModernDivider colors={colors} /></div>
 
       <AnimatedSection animation="slide-right">
         <TimelineSection items={wedding.timeline ?? []} colors={colors} />

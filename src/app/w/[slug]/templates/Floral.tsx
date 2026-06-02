@@ -7,6 +7,7 @@ import EventSection from './EventSection'
 import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
+import { FloralDivider } from './Ornaments'
 
 export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -59,7 +60,7 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
           style={{ borderColor: colors.accent + '60', animation: 'fl-border-grow 0.9s cubic-bezier(0.22,1,0.36,1) both 0.4s' }}
         >
           <h1
-            className="text-5xl md:text-6xl font-serif italic font-bold"
+            className="text-5xl md:text-6xl italic font-bold"
             style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.5s' }}
           >
             {wedding.bride_name}
@@ -75,7 +76,7 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
             <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
           </div>
           <h1
-            className="text-5xl md:text-6xl font-serif italic font-bold"
+            className="text-5xl md:text-6xl italic font-bold"
             style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.95s' }}
           >
             {wedding.groom_name}
@@ -164,7 +165,7 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
       </AnimatedSection>
 
       <AnimatedSection animation="fade-in">
-        <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
+        <div className="py-4 px-4"><FloralDivider colors={colors} /></div>
       </AnimatedSection>
 
       <AnimatedSection animation="float-up">

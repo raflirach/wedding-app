@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { Cormorant_Garamond, Playfair_Display, Lora } from 'next/font/google'
 import { createClient } from '@/lib/supabase/server'
 import { getTemplate, getColorScheme } from '@/lib/templates'
 import ElegantTemplate from './templates/Elegant'
@@ -8,6 +9,12 @@ import FloralTemplate from './templates/Floral'
 import AttendanceForm from './AttendanceForm'
 import WishesDisplay from './WishesDisplay'
 import InvitationOpener from './InvitationOpener'
+
+const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '600', '700'], style: ['normal', 'italic'], display: 'swap' })
+const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700', '900'], style: ['normal', 'italic'], display: 'swap' })
+const lora = Lora({ subsets: ['latin'], weight: ['400', '500', '600', '700'], style: ['normal', 'italic'], display: 'swap' })
+
+const FONT_MAP = { elegant: cormorant, modern: playfair, floral: lora }
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ to?: string }> }
 
@@ -67,8 +74,10 @@ export default async function InvitationPage({ params, searchParams }: Props) {
   const templateId = getTemplate(wedding.theme ?? 'elegant')
   const colors = getColorScheme(wedding.color_scheme ?? 'blush')
   const Template = TEMPLATE_MAP[templateId]
+  const font = FONT_MAP[templateId]
 
   return (
+    <div className={font.className}>
     <InvitationOpener
       brideName={wedding.bride_name}
       groomName={wedding.groom_name}
@@ -88,5 +97,6 @@ export default async function InvitationPage({ params, searchParams }: Props) {
         guestName={guestName}
       />
     </InvitationOpener>
+    </div>
   )
 }

@@ -7,6 +7,7 @@ import EventSection from './EventSection'
 import OurStorySection from './OurStorySection'
 import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
+import { WeddingRings, ElegantDivider } from './Ornaments'
 
 export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
@@ -44,23 +45,24 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
         </p>
         <div className="space-y-1">
           <h1
-            className="text-6xl md:text-8xl font-serif font-bold leading-none"
+            className="text-6xl md:text-8xl font-bold leading-none"
             style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.4s' }}
           >
             {wedding.bride_name}
           </h1>
           <p
-            className="text-4xl font-serif italic"
+            className="text-4xl italic"
             style={{ color: colors.primary, animation: 'el-fade-in 0.8s ease both 0.75s' }}
           >
             &amp;
           </p>
           <h1
-            className="text-6xl md:text-8xl font-serif font-bold leading-none"
+            className="text-6xl md:text-8xl font-bold leading-none"
             style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.9s' }}
           >
             {wedding.groom_name}
           </h1>
+          <div className="flex justify-center mt-8"><WeddingRings colors={colors} size={56} /></div>
         </div>
         <div className="flex items-center justify-center gap-4 mt-10" style={{ animation: 'el-fade-in 0.8s ease both 1.2s' }}>
           <div className="h-px w-16 origin-left" style={{ backgroundColor: colors.accent, animation: 'el-line-grow 0.8s ease both 1.3s' }} />
@@ -139,7 +141,7 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
       </AnimatedSection>
 
       <AnimatedSection animation="fade-in">
-        <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>✦ ✦ ✦</div>
+        <div className="py-6 px-4"><ElegantDivider colors={colors} /></div>
       </AnimatedSection>
 
       <AnimatedSection animation="fade-up">

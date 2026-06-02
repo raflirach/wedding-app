@@ -28,7 +28,13 @@ export default function EventSection({ label, date, time, venueName, venueAddres
       </p>
       <div
         className="rounded-2xl p-6 border space-y-2"
-        style={{ borderColor: colors.accent + '40', backgroundColor: '#ffffff70' }}
+        style={{
+          background: 'rgba(255, 255, 255, 0.42)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          border: '1px solid rgba(255, 255, 255, 0.65)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.7)',
+        }}
       >
         {date && (
           <p className="text-lg font-semibold" style={{ color: colors.textDark }}>
