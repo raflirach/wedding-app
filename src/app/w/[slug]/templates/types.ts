@@ -41,6 +41,7 @@ export type WeddingData = {
   bank_2_account_number: string | null
   timeline: TimelineItem[] | null
   love_story: StoryMilestone[] | null
+  show_pattern: boolean | null
 }
 
 export type Wish = {

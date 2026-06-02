@@ -60,6 +60,7 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           bank_2_account_number: wedding.bank_2_account_number ?? undefined,
           timeline: (wedding.timeline as { time: string; title: string; description?: string }[] | null) ?? [],
           love_story: (wedding.love_story as { date: string; title: string; description?: string }[] | null) ?? [],
+          show_pattern: wedding.show_pattern ?? true,
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"

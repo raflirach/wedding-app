@@ -17,8 +17,10 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
       minHeight: '100vh',
       position: 'relative',
       zIndex: 1,
-      backgroundImage: `radial-gradient(circle, ${colors.accent}1A 1px, transparent 1px)`,
-      backgroundSize: '20px 20px',
+      ...(wedding.show_pattern !== false && {
+        backgroundImage: `radial-gradient(circle, ${colors.accent}1A 1px, transparent 1px)`,
+        backgroundSize: '20px 20px',
+      }),
     }}>
       <Particles variant="elegant" colors={colors} />
       <style>{`

@@ -44,6 +44,7 @@ const WeddingSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
   })).optional().nullable(),
+  show_pattern: z.boolean().optional(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>
@@ -93,6 +94,7 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
       bank_2_account_number: result.data.bank_2_account_number || null,
       timeline: result.data.timeline?.length ? result.data.timeline : null,
       love_story: result.data.love_story?.length ? result.data.love_story : null,
+      show_pattern: result.data.show_pattern ?? true,
       user_id: user.id,
     })
     .select('id')
@@ -143,6 +145,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
       bank_2_account_number: result.data.bank_2_account_number || null,
       timeline: result.data.timeline?.length ? result.data.timeline : null,
       love_story: result.data.love_story?.length ? result.data.love_story : null,
+      show_pattern: result.data.show_pattern ?? true,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)

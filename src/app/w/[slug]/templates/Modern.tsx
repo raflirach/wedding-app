@@ -14,7 +14,9 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
     <main className="min-h-screen bg-white" style={{
       position: 'relative',
       zIndex: 1,
-      backgroundImage: `repeating-linear-gradient(45deg, ${colors.primary}12 0, ${colors.primary}12 1px, transparent 0, transparent 9px)`,
+      ...(wedding.show_pattern !== false && {
+        backgroundImage: `repeating-linear-gradient(45deg, ${colors.primary}12 0, ${colors.primary}12 1px, transparent 0, transparent 9px)`,
+      }),
     }}>
       <Particles variant="modern" colors={colors} />
       <style>{`

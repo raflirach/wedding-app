@@ -17,9 +17,11 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
       minHeight: '100vh',
       position: 'relative',
       zIndex: 1,
-      backgroundImage: `radial-gradient(circle, ${colors.primary}16 1px, transparent 1px), radial-gradient(circle, ${colors.primary}0C 1px, transparent 1px)`,
-      backgroundSize: '16px 16px, 16px 16px',
-      backgroundPosition: '0 0, 8px 8px',
+      ...(wedding.show_pattern !== false && {
+        backgroundImage: `radial-gradient(circle, ${colors.primary}16 1px, transparent 1px), radial-gradient(circle, ${colors.primary}0C 1px, transparent 1px)`,
+        backgroundSize: '16px 16px, 16px 16px',
+        backgroundPosition: '0 0, 8px 8px',
+      }),
     }}>
       <Particles variant="floral" colors={colors} />
       <style>{`

@@ -51,6 +51,7 @@ export const weddingSchema = z.object({
     title: z.string().min(1, 'Judul wajib diisi'),
     description: z.string().optional(),
   })).optional(),
+  show_pattern: z.boolean().optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -82,6 +83,7 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
         color_scheme: 'blush',
         timeline: [],
         love_story: [],
+        show_pattern: true,
         ...defaultValues,
       },
     })
@@ -306,6 +308,24 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Efek Visual */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body flex-row items-center justify-between py-4">
+          <div>
+            <p className="font-semibold text-base">Pola Latar Belakang</p>
+            <p className="text-sm text-base-content/60 mt-0.5">
+              Tambahkan tekstur halus di latar undangan
+            </p>
+          </div>
+          <input
+            type="checkbox"
+            className="toggle toggle-primary"
+            checked={watch('show_pattern') ?? true}
+            onChange={(e) => setValue('show_pattern', e.target.checked)}
+          />
         </div>
       </div>
 
