@@ -8,7 +8,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ModernTemplate({ wedding, colors, RsvpForm, WishFormComponent, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
   return (
     <main className="min-h-screen bg-white">
 
@@ -119,22 +119,17 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, WishFormComp
         <div className="h-px" style={{ backgroundColor: colors.primaryLight }} />
       </div>
 
-      {/* RSVP */}
+      {/* Kehadiran & Ucapan */}
       <section className="py-14 px-6 max-w-md mx-auto">
         <p className="text-xs font-bold tracking-[0.4em] uppercase mb-6" style={{ color: colors.primary }}>
-          Konfirmasi Kehadiran
+          Kehadiran & Ucapan
         </p>
-        <RsvpForm weddingId={weddingId} />
-      </section>
-
-      {/* Ucapan */}
-      <section className="py-8 px-6 max-w-md mx-auto">
-        <p className="text-xs font-bold tracking-[0.4em] uppercase mb-6" style={{ color: colors.primary }}>
-          Ucapan & Doa
-        </p>
-        <WishFormComponent weddingId={weddingId} colors={colors} />
+        <AttendanceForm weddingId={weddingId} colors={colors} />
         {wishes.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-8">
+            <p className="text-xs font-bold tracking-[0.4em] uppercase mb-4" style={{ color: colors.primary }}>
+              Ucapan Tamu
+            </p>
             <WishesDisplayComponent wishes={wishes} colors={colors} />
           </div>
         )}

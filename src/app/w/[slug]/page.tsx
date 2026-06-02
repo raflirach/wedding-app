@@ -6,8 +6,7 @@ import { getTemplate, getColorScheme } from '@/lib/templates'
 import ElegantTemplate from './templates/Elegant'
 import ModernTemplate from './templates/Modern'
 import FloralTemplate from './templates/Floral'
-import RsvpForm from './RsvpForm'
-import WishForm from './WishForm'
+import AttendanceForm from './AttendanceForm'
 import WishesDisplay from './WishesDisplay'
 import MusicPlayer from './MusicPlayer'
 
@@ -66,8 +65,7 @@ export default async function InvitationPage({ params }: Props) {
       <Template
         wedding={wedding}
         colors={colors}
-        RsvpForm={RsvpForm}
-        WishFormComponent={WishForm}
+        AttendanceForm={AttendanceForm}
         WishesDisplayComponent={WishesDisplay}
         wishes={wishes ?? []}
         weddingId={wedding.id}

@@ -8,7 +8,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ElegantTemplate({ wedding, colors, RsvpForm, WishFormComponent, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -114,26 +114,19 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, WishFormCom
 
       <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>✦ ✦ ✦</div>
 
-      {/* RSVP */}
+      {/* Kehadiran & Ucapan */}
       <section className="py-12 px-4 max-w-md mx-auto">
         <div className="text-center mb-6">
           <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: colors.textMuted }}>
-            Konfirmasi Kehadiran
+            Kehadiran & Ucapan
           </p>
         </div>
-        <RsvpForm weddingId={weddingId} />
-      </section>
-
-      {/* Ucapan & Doa */}
-      <section className="py-12 px-4 max-w-md mx-auto">
-        <div className="text-center mb-6">
-          <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: colors.textMuted }}>
-            Ucapan & Doa
-          </p>
-        </div>
-        <WishFormComponent weddingId={weddingId} colors={colors} />
+        <AttendanceForm weddingId={weddingId} colors={colors} />
         {wishes.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-8">
+            <p className="text-xs tracking-[0.3em] uppercase mb-4 text-center" style={{ color: colors.textMuted }}>
+              Ucapan Tamu
+            </p>
             <WishesDisplayComponent wishes={wishes} colors={colors} />
           </div>
         )}

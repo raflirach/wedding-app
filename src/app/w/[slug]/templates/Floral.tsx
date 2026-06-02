@@ -8,7 +8,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function FloralTemplate({ wedding, colors, RsvpForm, WishFormComponent, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -124,28 +124,22 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, WishFormComp
       <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
 
       {/* RSVP */}
+      {/* Kehadiran & Ucapan */}
       <section className="py-10 px-4 max-w-md mx-auto">
         <div className="text-center mb-6">
           <p className="text-xs tracking-[0.3em] uppercase" style={{ color: colors.textMuted }}>
-            Konfirmasi Kehadiran
+            Kehadiran & Ucapan
           </p>
           <p className="text-sm mt-1 italic" style={{ color: colors.textMuted }}>
             Kehadiran Anda adalah kebahagiaan kami
           </p>
         </div>
-        <RsvpForm weddingId={weddingId} />
-      </section>
-
-      {/* Ucapan */}
-      <section className="py-10 px-4 max-w-md mx-auto">
-        <div className="text-center mb-6">
-          <p className="text-xs tracking-[0.3em] uppercase" style={{ color: colors.textMuted }}>
-            Ucapan & Doa
-          </p>
-        </div>
-        <WishFormComponent weddingId={weddingId} colors={colors} />
+        <AttendanceForm weddingId={weddingId} colors={colors} />
         {wishes.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-8">
+            <p className="text-xs tracking-[0.3em] uppercase mb-4 text-center" style={{ color: colors.textMuted }}>
+              Ucapan Tamu
+            </p>
             <WishesDisplayComponent wishes={wishes} colors={colors} />
           </div>
         )}
