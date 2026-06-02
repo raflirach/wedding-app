@@ -23,6 +23,11 @@ export const weddingSchema = z.object({
   theme: z.string(),
   color_scheme: z.string(),
   cover_photo_url: z.string().optional(),
+  bride_full_name: z.string().optional(),
+  groom_full_name: z.string().optional(),
+  bride_parents: z.string().optional(),
+  groom_parents: z.string().optional(),
+  opening_text: z.string().optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -106,6 +111,54 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               />
               {errors.groom_name && <span className="text-error text-xs mt-1">{errors.groom_name.message}</span>}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Lengkap Mempelai */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body space-y-4">
+          <h2 className="font-semibold text-base">Detail Lengkap Mempelai</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="form-control">
+              <label className="label" htmlFor="bride_full_name">
+                <span className="label-text">Nama Lengkap Mempelai Wanita</span>
+              </label>
+              <input id="bride_full_name" {...register('bride_full_name')} type="text"
+                placeholder="Contoh: Sari Dewi Kusuma, S.Pd" className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="groom_full_name">
+                <span className="label-text">Nama Lengkap Mempelai Pria</span>
+              </label>
+              <input id="groom_full_name" {...register('groom_full_name')} type="text"
+                placeholder="Contoh: Budi Santoso, S.T" className="input input-bordered" />
+            </div>
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="bride_parents">
+              <span className="label-text">Nama Orang Tua Mempelai Wanita</span>
+            </label>
+            <input id="bride_parents" {...register('bride_parents')} type="text"
+              placeholder="Putri dari Bapak Ahmad & Ibu Siti" className="input input-bordered" />
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="groom_parents">
+              <span className="label-text">Nama Orang Tua Mempelai Pria</span>
+            </label>
+            <input id="groom_parents" {...register('groom_parents')} type="text"
+              placeholder="Putra dari Bapak Hendra & Ibu Wati" className="input input-bordered" />
+          </div>
+          <div className="form-control">
+            <label className="label" htmlFor="opening_text">
+              <span className="label-text">Kata Pembuka</span>
+            </label>
+            <textarea id="opening_text" {...register('opening_text')} rows={3}
+              placeholder="Contoh: Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami..."
+              className="textarea textarea-bordered" />
+            <label className="label">
+              <span className="label-text-alt text-base-content/40">Tampil di bagian atas undangan</span>
+            </label>
           </div>
         </div>
       </div>

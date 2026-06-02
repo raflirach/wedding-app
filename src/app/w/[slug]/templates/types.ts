@@ -3,6 +3,11 @@ import type { ColorScheme } from '@/lib/templates'
 export type WeddingData = {
   bride_name: string
   groom_name: string
+  bride_full_name: string | null
+  groom_full_name: string | null
+  bride_parents: string | null
+  groom_parents: string | null
+  opening_text: string | null
   wedding_date: string | null
   wedding_time: string | null
   venue_name: string | null

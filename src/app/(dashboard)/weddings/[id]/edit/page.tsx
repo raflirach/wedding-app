@@ -41,6 +41,11 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           theme: wedding.theme ?? 'elegant',
           color_scheme: wedding.color_scheme ?? 'blush',
           cover_photo_url: wedding.cover_photo_url ?? undefined,
+          bride_full_name: wedding.bride_full_name ?? undefined,
+          groom_full_name: wedding.groom_full_name ?? undefined,
+          bride_parents: wedding.bride_parents ?? undefined,
+          groom_parents: wedding.groom_parents ?? undefined,
+          opening_text: wedding.opening_text ?? undefined,
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"

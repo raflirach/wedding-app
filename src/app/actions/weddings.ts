@@ -17,6 +17,11 @@ const WeddingSchema = z.object({
   theme: z.string(),
   color_scheme: z.string(),
   cover_photo_url: z.string().optional(),
+  bride_full_name: z.string().optional(),
+  groom_full_name: z.string().optional(),
+  bride_parents: z.string().optional(),
+  groom_parents: z.string().optional(),
+  opening_text: z.string().optional(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>
@@ -47,6 +52,11 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
       theme: result.data.theme,
       color_scheme: result.data.color_scheme,
       cover_photo_url: result.data.cover_photo_url || null,
+      bride_full_name: result.data.bride_full_name || null,
+      groom_full_name: result.data.groom_full_name || null,
+      bride_parents: result.data.bride_parents || null,
+      groom_parents: result.data.groom_parents || null,
+      opening_text: result.data.opening_text || null,
       user_id: user.id,
     })
     .select('id')
@@ -78,6 +88,11 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
       theme: result.data.theme,
       color_scheme: result.data.color_scheme,
       cover_photo_url: result.data.cover_photo_url || null,
+      bride_full_name: result.data.bride_full_name || null,
+      groom_full_name: result.data.groom_full_name || null,
+      bride_parents: result.data.bride_parents || null,
+      groom_parents: result.data.groom_parents || null,
+      opening_text: result.data.opening_text || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)

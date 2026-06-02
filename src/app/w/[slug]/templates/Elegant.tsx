@@ -39,9 +39,37 @@ export default function ElegantTemplate({ wedding, colors, RsvpForm, weddingId }
           <span className="text-lg" style={{ color: colors.accent }}>✦</span>
           <div className="h-px w-16" style={{ backgroundColor: colors.accent }} />
         </div>
-        <p className="mt-4 text-sm italic font-light" style={{ color: colors.textMuted }}>
-          Bersama keluarga, kami mengundang kehadiran Anda
-        </p>
+        {wedding.opening_text ? (
+          <p className="mt-6 text-sm italic font-light max-w-sm mx-auto leading-relaxed" style={{ color: colors.textMuted }}>
+            {wedding.opening_text}
+          </p>
+        ) : (
+          <p className="mt-4 text-sm italic font-light" style={{ color: colors.textMuted }}>
+            Bersama keluarga, kami mengundang kehadiran Anda
+          </p>
+        )}
+
+        {/* Parents */}
+        {(wedding.bride_parents || wedding.groom_parents) && (
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto text-sm">
+            {wedding.bride_parents && (
+              <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.primaryLight }}>
+                <p className="font-semibold mb-1" style={{ color: colors.textDark }}>
+                  {wedding.bride_full_name || wedding.bride_name}
+                </p>
+                <p style={{ color: colors.textMuted }}>{wedding.bride_parents}</p>
+              </div>
+            )}
+            {wedding.groom_parents && (
+              <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.primaryLight }}>
+                <p className="font-semibold mb-1" style={{ color: colors.textDark }}>
+                  {wedding.groom_full_name || wedding.groom_name}
+                </p>
+                <p style={{ color: colors.textMuted }}>{wedding.groom_parents}</p>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Date + Countdown */}

@@ -44,6 +44,33 @@ export default function ModernTemplate({ wedding, colors, RsvpForm, weddingId }:
         </div>
       </section>
 
+      {/* Opening + Parents */}
+      {(wedding.opening_text || wedding.bride_parents || wedding.groom_parents) && (
+        <section className="py-10 px-6 max-w-lg mx-auto space-y-6">
+          {wedding.opening_text && (
+            <p className="text-center text-sm text-gray-500 italic leading-relaxed">
+              {wedding.opening_text}
+            </p>
+          )}
+          {(wedding.bride_parents || wedding.groom_parents) && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {wedding.bride_parents && (
+                <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
+                  <p className="font-bold text-gray-900">{wedding.bride_full_name || wedding.bride_name}</p>
+                  <p className="text-sm text-gray-500 mt-1">{wedding.bride_parents}</p>
+                </div>
+              )}
+              {wedding.groom_parents && (
+                <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
+                  <p className="font-bold text-gray-900">{wedding.groom_full_name || wedding.groom_name}</p>
+                  <p className="text-sm text-gray-500 mt-1">{wedding.groom_parents}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
       {/* Date strip */}
       {wedding.wedding_date && (
         <div className="py-5 px-4 text-center" style={{ backgroundColor: colors.primary }}>

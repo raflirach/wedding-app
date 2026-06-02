@@ -43,10 +43,43 @@ export default function FloralTemplate({ wedding, colors, RsvpForm, weddingId }:
             {wedding.groom_name}
           </h1>
         </div>
-        <p className="text-sm italic" style={{ color: colors.textMuted }}>
-          "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan-pasangan untukmu"
-        </p>
-        <p className="text-xs mt-1" style={{ color: colors.accent }}>— QS. Ar-Rum: 21</p>
+        {wedding.opening_text ? (
+          <p className="text-sm italic max-w-sm mx-auto leading-relaxed" style={{ color: colors.textMuted }}>
+            {wedding.opening_text}
+          </p>
+        ) : (
+          <>
+            <p className="text-sm italic" style={{ color: colors.textMuted }}>
+              "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan-pasangan untukmu"
+            </p>
+            <p className="text-xs mt-1" style={{ color: colors.accent }}>— QS. Ar-Rum: 21</p>
+          </>
+        )}
+
+        {/* Parents */}
+        {(wedding.bride_parents || wedding.groom_parents) && (
+          <div className="mt-6 max-w-sm mx-auto space-y-3 text-sm">
+            {wedding.bride_parents && (
+              <div className="text-center">
+                <p className="font-semibold" style={{ color: colors.textDark }}>
+                  {wedding.bride_full_name || wedding.bride_name}
+                </p>
+                <p style={{ color: colors.textMuted }}>{wedding.bride_parents}</p>
+              </div>
+            )}
+            {wedding.bride_parents && wedding.groom_parents && (
+              <p className="text-center" style={{ color: colors.accent }}>✿</p>
+            )}
+            {wedding.groom_parents && (
+              <div className="text-center">
+                <p className="font-semibold" style={{ color: colors.textDark }}>
+                  {wedding.groom_full_name || wedding.groom_name}
+                </p>
+                <p style={{ color: colors.textMuted }}>{wedding.groom_parents}</p>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Date + Countdown */}
