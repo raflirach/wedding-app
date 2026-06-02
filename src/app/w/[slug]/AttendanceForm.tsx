@@ -1,12 +1,13 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { submitAttendance, type AttendanceState } from '@/app/actions/attendance'
 import type { ColorScheme } from '@/lib/templates'
 
 export default function AttendanceForm({ weddingId, colors }: { weddingId: string; colors: ColorScheme }) {
   const submitWithId = submitAttendance.bind(null, weddingId)
   const [state, action, isPending] = useActionState<AttendanceState, FormData>(submitWithId, undefined)
+  const [status, setStatus] = useState<'attending' | 'not_attending'>('attending')
 
   if (state?.success) {
     return (
@@ -39,42 +40,37 @@ export default function AttendanceForm({ weddingId, colors }: { weddingId: strin
         />
       </div>
 
-      {/* Kehadiran */}
+      {/* Kehadiran — hidden input + visual buttons */}
+      <input type="hidden" name="rsvp_status" value={status} />
       <div>
         <label className="text-sm font-medium block mb-2" style={{ color: colors.textDark }}>
           Konfirmasi Kehadiran
         </label>
         <div className="grid grid-cols-2 gap-3">
-          <label className="cursor-pointer">
-            <input type="radio" name="rsvp_status" value="attending" className="hidden peer" defaultChecked />
-            <div
-              className="rounded-xl py-3 text-center text-sm font-semibold border-2 transition-all peer-checked:text-white"
-              style={{
-                borderColor: colors.primary,
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget
-                el.style.backgroundColor = colors.primary
-                el.style.color = 'white'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget
-                el.style.backgroundColor = ''
-                el.style.color = ''
-              }}
-            >
-              ✓ Hadir
-            </div>
-          </label>
-          <label className="cursor-pointer">
-            <input type="radio" name="rsvp_status" value="not_attending" className="hidden peer" />
-            <div
-              className="rounded-xl py-3 text-center text-sm font-semibold border-2 transition-all"
-              style={{ borderColor: colors.accent + '60' }}
-            >
-              ✗ Tidak Hadir
-            </div>
-          </label>
+          <button
+            type="button"
+            onClick={() => setStatus('attending')}
+            className="rounded-xl py-3 text-sm font-semibold border-2 transition-all"
+            style={
+              status === 'attending'
+                ? { backgroundColor: colors.primary, borderColor: colors.primary, color: 'white' }
+                : { borderColor: colors.accent + '60', color: colors.textMuted }
+            }
+          >
+            ✓ Hadir
+          </button>
+          <button
+            type="button"
+            onClick={() => setStatus('not_attending')}
+            className="rounded-xl py-3 text-sm font-semibold border-2 transition-all"
+            style={
+              status === 'not_attending'
+                ? { backgroundColor: colors.primary, borderColor: colors.primary, color: 'white' }
+                : { borderColor: colors.accent + '60', color: colors.textMuted }
+            }
+          >
+            ✗ Tidak Hadir
+          </button>
         </div>
       </div>
 
@@ -93,7 +89,9 @@ export default function AttendanceForm({ weddingId, colors }: { weddingId: strin
       </div>
 
       {state?.error && (
-        <p className="text-red-500 text-xs">{state.error}</p>
+        <p className="text-sm text-center font-medium" style={{ color: '#dc2626' }}>
+          {state.error}
+        </p>
       )}
 
       <button

@@ -32,7 +32,7 @@ export async function submitAttendance(
     rsvp_status: result.data.rsvp_status,
   })
 
-  if (error) return { error: 'Gagal menyimpan konfirmasi. Coba lagi.' }
+  if (error) return { error: error.message }
 
   if (result.data.message?.trim()) {
     await supabase.from('wishes').insert({
