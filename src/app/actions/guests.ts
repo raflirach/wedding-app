@@ -76,6 +76,42 @@ export async function deleteGuest(weddingId: string, guestId: string): Promise<v
   revalidatePath(`/weddings/${weddingId}/guests`)
 }
 
+export type BulkImportResult = { imported: number; error?: string }
+
+export async function bulkImportGuests(
+  weddingId: string,
+  guests: Array<{ name: string; phone?: string; email?: string; notes?: string }>
+): Promise<BulkImportResult> {
+  const { supabase, user } = await getAuthUser()
+
+  const { data: wedding } = await supabase
+    .from('weddings')
+    .select('id')
+    .eq('id', weddingId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (!wedding) return { imported: 0, error: 'Undangan tidak ditemukan.' }
+
+  const rows = guests
+    .filter((g) => g.name.trim().length >= 2)
+    .map((g) => ({
+      wedding_id: weddingId,
+      name: g.name.trim(),
+      phone: g.phone?.trim() || null,
+      email: g.email?.trim() || null,
+      notes: g.notes?.trim() || null,
+    }))
+
+  if (rows.length === 0) return { imported: 0, error: 'Tidak ada data valid untuk diimpor.' }
+
+  const { error } = await supabase.from('guests').insert(rows)
+  if (error) return { imported: 0, error: error.message }
+
+  revalidatePath(`/weddings/${weddingId}/guests`)
+  return { imported: rows.length }
+}
+
 export async function updateRsvpStatus(
   weddingId: string,
   guestId: string,

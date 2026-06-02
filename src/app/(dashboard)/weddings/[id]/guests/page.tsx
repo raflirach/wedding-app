@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import AddGuestForm from './AddGuestForm'
 import GuestList from './GuestList'
 import ExportButton from './ExportButton'
+import ImportGuestsButton from './ImportGuestsButton'
 
 export default async function GuestsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -44,6 +45,7 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
             {wedding.bride_name} & {wedding.groom_name}
           </p>
         </div>
+        <ImportGuestsButton weddingId={id} />
         <ExportButton guests={all} slug={wedding.slug} />
       </div>
 
