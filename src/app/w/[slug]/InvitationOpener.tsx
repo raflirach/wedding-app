@@ -114,8 +114,16 @@ export default function InvitationOpener({
       )}
 
       {/* Invitation content */}
+      <style>{`
+        @keyframes invitationReveal {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       <div className={opened ? 'block' : 'hidden'}>
-        {children}
+        <div style={opened ? { animation: 'invitationReveal 0.8s ease both' } : {}}>
+          {children}
+        </div>
       </div>
 
       {/* Floating music toggle (shown after open) */}
