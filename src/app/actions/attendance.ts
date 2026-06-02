@@ -1,7 +1,14 @@
 'use server'
 
 import { z } from 'zod'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@supabase/supabase-js'
+
+function createPublicClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 const AttendanceSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.'),
@@ -24,7 +31,7 @@ export async function submitAttendance(
 
   if (!result.success) return { error: result.error.issues[0].message }
 
-  const supabase = createAdminClient()
+  const supabase = createPublicClient()
 
   const { error } = await supabase.from('guests').insert({
     wedding_id: weddingId,
@@ -35,7 +42,8 @@ export async function submitAttendance(
   if (error) return { error: error.message }
 
   if (result.data.message?.trim()) {
-    await supabase.from('wishes').insert({
+    const publicClient = createPublicClient()
+    await publicClient.from('wishes').insert({
       wedding_id: weddingId,
       name: result.data.name,
       message: result.data.message.trim(),
