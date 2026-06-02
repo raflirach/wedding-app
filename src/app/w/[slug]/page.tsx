@@ -7,7 +7,7 @@ import ModernTemplate from './templates/Modern'
 import FloralTemplate from './templates/Floral'
 import AttendanceForm from './AttendanceForm'
 import WishesDisplay from './WishesDisplay'
-import MusicPlayer from './MusicPlayer'
+import InvitationOpener from './InvitationOpener'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -59,7 +59,13 @@ export default async function InvitationPage({ params }: Props) {
   const Template = TEMPLATE_MAP[templateId]
 
   return (
-    <>
+    <InvitationOpener
+      brideName={wedding.bride_name}
+      groomName={wedding.groom_name}
+      weddingDate={wedding.wedding_date}
+      musicUrl={wedding.music_url ?? null}
+      colors={colors}
+    >
       <Template
         wedding={wedding}
         colors={colors}
@@ -68,9 +74,6 @@ export default async function InvitationPage({ params }: Props) {
         wishes={wishes ?? []}
         weddingId={wedding.id}
       />
-      {wedding.music_url && (
-        <MusicPlayer url={wedding.music_url} colors={colors} />
-      )}
-    </>
+    </InvitationOpener>
   )
 }
