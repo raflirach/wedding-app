@@ -2,7 +2,6 @@
 
 import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
-import { createAdminClient } from '@/lib/supabase/admin'
 
 const AttendanceSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.'),
@@ -25,33 +24,26 @@ export async function submitAttendance(
 
   if (!result.success) return { error: result.error.issues[0].message }
 
-  // Public client for guests — works with existing RLS policy
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  const { error } = await supabase.from('guests').insert({
+  const { error: guestError } = await supabase.from('guests').insert({
     wedding_id: weddingId,
     name: result.data.name,
     rsvp_status: result.data.rsvp_status,
   })
 
-  if (error) return { error: error.message }
+  if (guestError) return { error: guestError.message }
 
-  // Admin client for wishes — bypass RLS
   if (result.data.message?.trim()) {
-    try {
-      const admin = createAdminClient()
-      const { error: wishError } = await admin.from('wishes').insert({
-        wedding_id: weddingId,
-        name: result.data.name,
-        message: result.data.message.trim(),
-      })
-      if (wishError) console.error('Wish insert error:', wishError.message)
-    } catch (e) {
-      console.error('Admin client error:', e)
-    }
+    const { error: wishError } = await supabase.from('wishes').insert({
+      wedding_id: weddingId,
+      name: result.data.name,
+      message: result.data.message.trim(),
+    })
+    if (wishError) return { error: wishError.message }
   }
 
   return { success: true }

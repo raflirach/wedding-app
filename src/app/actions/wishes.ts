@@ -3,8 +3,15 @@
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createServerClient } from '@/lib/supabase/server'
+import { createClient as createAnonClient } from '@supabase/supabase-js'
+
+function createPublicClient() {
+  return createAnonClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 const WishSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.'),
@@ -25,7 +32,7 @@ export async function submitWish(
 
   if (!result.success) return { error: result.error.issues[0].message }
 
-  const supabase = createAdminClient()
+  const supabase = createPublicClient()
 
   const { error } = await supabase.from('wishes').insert({
     wedding_id: weddingId,
@@ -40,7 +47,7 @@ export async function submitWish(
 }
 
 async function getAuthUser() {
-  const supabase = await createClient()
+  const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
   return { supabase, user }
@@ -53,8 +60,7 @@ export async function toggleWishVisibility(weddingId: string, wishId: string, is
     .from('weddings').select('id').eq('id', weddingId).eq('user_id', user.id).single()
   if (!wedding) return
 
-  const admin = createAdminClient()
-  await admin.from('wishes').update({ is_hidden: !isHidden }).eq('id', wishId).eq('wedding_id', weddingId)
+  await supabase.from('wishes').update({ is_hidden: !isHidden }).eq('id', wishId).eq('wedding_id', weddingId)
 
   revalidatePath(`/weddings/${weddingId}/wishes`)
 }
@@ -66,8 +72,7 @@ export async function deleteWish(weddingId: string, wishId: string) {
     .from('weddings').select('id').eq('id', weddingId).eq('user_id', user.id).single()
   if (!wedding) return
 
-  const admin = createAdminClient()
-  await admin.from('wishes').delete().eq('id', wishId).eq('wedding_id', weddingId)
+  await supabase.from('wishes').delete().eq('id', wishId).eq('wedding_id', weddingId)
 
   revalidatePath(`/weddings/${weddingId}/wishes`)
 }

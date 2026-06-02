@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import WishModerationList from './WishModerationList'
 
 export default async function WishesPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,17 +18,18 @@ export default async function WishesPage({ params }: { params: Promise<{ id: str
 
   if (!wedding) notFound()
 
-  const admin = createAdminClient()
-  const { data: wishes, error: wishError } = await admin
+  // Fetch without is_hidden first, fall back gracefully if column missing
+  const { data: wishes, error } = await supabase
     .from('wishes')
     .select('id, name, message, created_at, is_hidden')
     .eq('wedding_id', id)
     .order('created_at', { ascending: false })
 
-  // Fallback jika kolom is_hidden belum ada (migration belum dijalankan)
   let all: { id: string; name: string; message: string; created_at: string; is_hidden: boolean }[] = []
-  if (wishError) {
-    const { data: fallback } = await admin
+
+  if (error) {
+    // is_hidden column doesn't exist yet — fetch without it
+    const { data: fallback } = await supabase
       .from('wishes')
       .select('id, name, message, created_at')
       .eq('wedding_id', id)
@@ -38,6 +38,7 @@ export default async function WishesPage({ params }: { params: Promise<{ id: str
   } else {
     all = (wishes ?? []).map((w) => ({ ...w, is_hidden: w.is_hidden ?? false }))
   }
+
   const visible = all.filter((w) => !w.is_hidden).length
   const hidden = all.filter((w) => w.is_hidden).length
 
