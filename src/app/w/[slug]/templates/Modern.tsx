@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
+import GallerySection from './GallerySection'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -8,7 +9,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId }: TemplateProps) {
   return (
     <main className="min-h-screen bg-white">
 
@@ -118,6 +119,8 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
       <div className="max-w-lg mx-auto px-6">
         <div className="h-px" style={{ backgroundColor: colors.primaryLight }} />
       </div>
+
+      <GallerySection photos={photos} colors={colors} />
 
       {/* Kehadiran & Ucapan */}
       <section className="py-14 px-6 max-w-md mx-auto">

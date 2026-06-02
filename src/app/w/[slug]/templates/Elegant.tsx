@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
+import GallerySection from './GallerySection'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -8,7 +9,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -113,6 +114,8 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
       )}
 
       <div className="text-center py-4 text-2xl" style={{ color: colors.accent + '80' }}>✦ ✦ ✦</div>
+
+      <GallerySection photos={photos} colors={colors} />
 
       {/* Kehadiran & Ucapan */}
       <section className="py-12 px-4 max-w-md mx-auto">

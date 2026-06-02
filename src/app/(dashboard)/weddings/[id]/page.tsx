@@ -110,11 +110,14 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3">
-        <Link href={`/weddings/${id}/guests`} className="btn btn-primary flex-1">
+      <div className="grid grid-cols-3 gap-3">
+        <Link href={`/weddings/${id}/guests`} className="btn btn-primary">
           Kelola Tamu
         </Link>
-        <Link href={`/w/${wedding.slug}`} className="btn btn-outline flex-1" target="_blank">
+        <Link href={`/weddings/${id}/gallery`} className="btn btn-outline">
+          Galeri Foto
+        </Link>
+        <Link href={`/w/${wedding.slug}`} className="btn btn-outline" target="_blank">
           Lihat Undangan
         </Link>
       </div>

@@ -25,11 +25,17 @@ export type Wish = {
   created_at: string
 }
 
+export type Photo = {
+  id: string
+  url: string
+}
+
 export type TemplateProps = {
   wedding: WeddingData
   colors: ColorScheme
   AttendanceForm: React.ComponentType<{ weddingId: string; colors: ColorScheme }>
   WishesDisplayComponent: React.ComponentType<{ wishes: Wish[]; colors: ColorScheme }>
   wishes: Wish[]
+  photos: Photo[]
   weddingId: string
 }

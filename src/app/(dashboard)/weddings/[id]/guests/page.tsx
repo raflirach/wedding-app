@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import AddGuestForm from './AddGuestForm'
 import GuestList from './GuestList'
+import ExportButton from './ExportButton'
 
 export default async function GuestsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -12,7 +13,7 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
 
   const { data: wedding } = await supabase
     .from('weddings')
-    .select('id, bride_name, groom_name')
+    .select('id, bride_name, groom_name, slug')
     .eq('id', id)
     .eq('user_id', user.id)
     .single()
@@ -37,12 +38,13 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
         <Link href={`/weddings/${id}`} className="btn btn-ghost btn-sm btn-square">
           ←
         </Link>
-        <div>
+        <div className="flex-1">
           <h1 className="text-2xl font-bold">Kelola Tamu</h1>
           <p className="text-base-content/60 text-sm">
             {wedding.bride_name} & {wedding.groom_name}
           </p>
         </div>
+        <ExportButton guests={all} slug={wedding.slug} />
       </div>
 
       {/* Stats */}

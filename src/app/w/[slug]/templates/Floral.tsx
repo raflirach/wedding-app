@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
+import GallerySection from './GallerySection'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -8,7 +9,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, weddingId }: TemplateProps) {
+export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -123,7 +124,8 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
 
       <div className="text-center py-2 text-2xl select-none" style={{ color: colors.accent }}>✾ ✾ ✾</div>
 
-      {/* RSVP */}
+      <GallerySection photos={photos} colors={colors} />
+
       {/* Kehadiran & Ucapan */}
       <section className="py-10 px-4 max-w-md mx-auto">
         <div className="text-center mb-6">
