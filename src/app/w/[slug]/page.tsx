@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { getTemplate, getColorScheme } from '@/lib/templates'
 import ElegantTemplate from './templates/Elegant'
 import ModernTemplate from './templates/Modern'
@@ -49,8 +48,7 @@ export default async function InvitationPage({ params }: Props) {
 
   if (!wedding) notFound()
 
-  const admin = createAdminClient()
-  const { data: wishes } = await admin
+  const { data: wishes } = await supabase
     .from('wishes')
     .select('id, name, message, created_at')
     .eq('wedding_id', wedding.id)
