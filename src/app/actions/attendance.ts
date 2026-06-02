@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 function createPublicClient() {
   return createClient(
@@ -42,8 +43,8 @@ export async function submitAttendance(
   if (error) return { error: error.message }
 
   if (result.data.message?.trim()) {
-    const publicClient = createPublicClient()
-    await publicClient.from('wishes').insert({
+    const admin = createAdminClient()
+    await admin.from('wishes').insert({
       wedding_id: weddingId,
       name: result.data.name,
       message: result.data.message.trim(),
