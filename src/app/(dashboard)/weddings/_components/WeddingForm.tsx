@@ -30,6 +30,12 @@ export const weddingSchema = z.object({
   groom_parents: z.string().optional(),
   opening_text: z.string().optional(),
   music_url: z.string().optional(),
+  bank_1_name: z.string().optional(),
+  bank_1_account_name: z.string().optional(),
+  bank_1_account_number: z.string().optional(),
+  bank_2_name: z.string().optional(),
+  bank_2_account_name: z.string().optional(),
+  bank_2_account_number: z.string().optional(),
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
@@ -275,6 +281,53 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
             value={watch('music_url')}
             onChange={(url) => setValue('music_url', url)}
           />
+        </div>
+      </div>
+
+      {/* Amplop Digital */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body space-y-4">
+          <div>
+            <h2 className="font-semibold text-base">Amplop Digital</h2>
+            <p className="text-sm text-base-content/60 mt-1">
+              Nomor rekening untuk transfer hadiah — tampil di undangan
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="form-control">
+              <label className="label" htmlFor="bank_1_name"><span className="label-text">Nama Bank 1</span></label>
+              <input id="bank_1_name" {...register('bank_1_name')} type="text"
+                placeholder="BCA / BNI / Mandiri..." className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="bank_1_account_number"><span className="label-text">Nomor Rekening</span></label>
+              <input id="bank_1_account_number" {...register('bank_1_account_number')} type="text"
+                placeholder="1234567890" className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="bank_1_account_name"><span className="label-text">Atas Nama</span></label>
+              <input id="bank_1_account_name" {...register('bank_1_account_name')} type="text"
+                placeholder="Nama pemilik rekening" className="input input-bordered" />
+            </div>
+          </div>
+          <div className="divider my-0 text-xs text-base-content/30">Bank kedua (opsional)</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="form-control">
+              <label className="label" htmlFor="bank_2_name"><span className="label-text">Nama Bank 2</span></label>
+              <input id="bank_2_name" {...register('bank_2_name')} type="text"
+                placeholder="BCA / BNI / Mandiri..." className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="bank_2_account_number"><span className="label-text">Nomor Rekening</span></label>
+              <input id="bank_2_account_number" {...register('bank_2_account_number')} type="text"
+                placeholder="1234567890" className="input input-bordered" />
+            </div>
+            <div className="form-control">
+              <label className="label" htmlFor="bank_2_account_name"><span className="label-text">Atas Nama</span></label>
+              <input id="bank_2_account_name" {...register('bank_2_account_name')} type="text"
+                placeholder="Nama pemilik rekening" className="input input-bordered" />
+            </div>
+          </div>
         </div>
       </div>
 

@@ -23,6 +23,12 @@ const WeddingSchema = z.object({
   groom_parents: z.string().optional(),
   opening_text: z.string().optional(),
   music_url: z.string().optional(),
+  bank_1_name: z.string().optional(),
+  bank_1_account_name: z.string().optional(),
+  bank_1_account_number: z.string().optional(),
+  bank_2_name: z.string().optional(),
+  bank_2_account_name: z.string().optional(),
+  bank_2_account_number: z.string().optional(),
 })
 
 export type WeddingFormData = z.infer<typeof WeddingSchema>
@@ -59,6 +65,12 @@ export async function createWedding(data: WeddingFormData): Promise<WeddingActio
       groom_parents: result.data.groom_parents || null,
       opening_text: result.data.opening_text || null,
       music_url: result.data.music_url || null,
+      bank_1_name: result.data.bank_1_name || null,
+      bank_1_account_name: result.data.bank_1_account_name || null,
+      bank_1_account_number: result.data.bank_1_account_number || null,
+      bank_2_name: result.data.bank_2_name || null,
+      bank_2_account_name: result.data.bank_2_account_name || null,
+      bank_2_account_number: result.data.bank_2_account_number || null,
       user_id: user.id,
     })
     .select('id')
@@ -96,6 +108,12 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
       groom_parents: result.data.groom_parents || null,
       opening_text: result.data.opening_text || null,
       music_url: result.data.music_url || null,
+      bank_1_name: result.data.bank_1_name || null,
+      bank_1_account_name: result.data.bank_1_account_name || null,
+      bank_1_account_number: result.data.bank_1_account_number || null,
+      bank_2_name: result.data.bank_2_name || null,
+      bank_2_account_name: result.data.bank_2_account_name || null,
+      bank_2_account_number: result.data.bank_2_account_number || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)

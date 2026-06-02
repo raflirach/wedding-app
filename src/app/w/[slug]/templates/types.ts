@@ -16,6 +16,12 @@ export type WeddingData = {
   cover_photo_url: string | null
   music_url: string | null
   slug: string
+  bank_1_name: string | null
+  bank_1_account_name: string | null
+  bank_1_account_number: string | null
+  bank_2_name: string | null
+  bank_2_account_name: string | null
+  bank_2_account_number: string | null
 }
 
 export type Wish = {
@@ -33,9 +39,10 @@ export type Photo = {
 export type TemplateProps = {
   wedding: WeddingData
   colors: ColorScheme
-  AttendanceForm: React.ComponentType<{ weddingId: string; colors: ColorScheme }>
+  AttendanceForm: React.ComponentType<{ weddingId: string; colors: ColorScheme; defaultName?: string }>
   WishesDisplayComponent: React.ComponentType<{ wishes: Wish[]; colors: ColorScheme }>
   wishes: Wish[]
   photos: Photo[]
   weddingId: string
+  guestName?: string
 }

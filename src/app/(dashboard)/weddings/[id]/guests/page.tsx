@@ -73,7 +73,7 @@ export default async function GuestsPage({ params }: { params: Promise<{ id: str
       <AddGuestForm weddingId={id} />
 
       {/* Guest List */}
-      <GuestList guests={all} weddingId={id} pending={pending} />
+      <GuestList guests={all} weddingId={id} slug={wedding.slug} pending={pending} />
     </div>
   )
 }

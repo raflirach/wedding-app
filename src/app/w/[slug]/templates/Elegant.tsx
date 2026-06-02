@@ -2,6 +2,7 @@ import Image from 'next/image'
 import type { TemplateProps } from './types'
 import CountdownTimer from '../CountdownTimer'
 import GallerySection from './GallerySection'
+import GiftSection from './GiftSection'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -9,7 +10,7 @@ function formatDate(date: string) {
   })
 }
 
-export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId }: TemplateProps) {
+export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
   return (
     <main style={{ backgroundColor: colors.bg, minHeight: '100vh' }}>
 
@@ -117,6 +118,8 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
 
       <GallerySection photos={photos} colors={colors} />
 
+      <GiftSection wedding={wedding} colors={colors} />
+
       {/* Kehadiran & Ucapan */}
       <section className="py-12 px-4 max-w-md mx-auto">
         <div className="text-center mb-6">
@@ -124,7 +127,7 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
             Kehadiran & Ucapan
           </p>
         </div>
-        <AttendanceForm weddingId={weddingId} colors={colors} />
+        <AttendanceForm weddingId={weddingId} colors={colors} defaultName={guestName} />
         {wishes.length > 0 && (
           <div className="mt-8">
             <p className="text-xs tracking-[0.3em] uppercase mb-4 text-center" style={{ color: colors.textMuted }}>

@@ -10,10 +10,11 @@ type Props = {
   musicUrl: string | null
   colors: ColorScheme
   children: React.ReactNode
+  guestName?: string
 }
 
 export default function InvitationOpener({
-  brideName, groomName, weddingDate, musicUrl, colors, children,
+  brideName, groomName, weddingDate, musicUrl, colors, children, guestName,
 }: Props) {
   const [opened, setOpened] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -82,6 +83,17 @@ export default function InvitationOpener({
             <p className="mt-5 text-sm font-light" style={{ color: colors.textMuted }}>
               {new Date(weddingDate).toLocaleDateString('id-ID', { dateStyle: 'long' })}
             </p>
+          )}
+
+          {guestName && (
+            <div className="mt-6 px-6 py-3 rounded-xl border" style={{ borderColor: colors.accent + '50', backgroundColor: colors.primaryLight }}>
+              <p className="text-xs tracking-[0.3em] uppercase" style={{ color: colors.textMuted }}>
+                Kepada Yth.
+              </p>
+              <p className="text-base font-semibold mt-0.5" style={{ color: colors.textDark }}>
+                {guestName}
+              </p>
+            </div>
           )}
 
           <button

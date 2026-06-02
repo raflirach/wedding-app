@@ -47,6 +47,12 @@ export default async function EditWeddingPage({ params }: { params: Promise<{ id
           groom_parents: wedding.groom_parents ?? undefined,
           opening_text: wedding.opening_text ?? undefined,
           music_url: wedding.music_url ?? undefined,
+          bank_1_name: wedding.bank_1_name ?? undefined,
+          bank_1_account_name: wedding.bank_1_account_name ?? undefined,
+          bank_1_account_number: wedding.bank_1_account_number ?? undefined,
+          bank_2_name: wedding.bank_2_name ?? undefined,
+          bank_2_account_name: wedding.bank_2_account_name ?? undefined,
+          bank_2_account_number: wedding.bank_2_account_number ?? undefined,
         }}
         onSubmit={updateWithId}
         submitLabel="Simpan Perubahan"

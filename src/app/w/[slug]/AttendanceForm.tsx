@@ -4,7 +4,7 @@ import { useActionState, useState } from 'react'
 import { submitAttendance, type AttendanceState } from '@/app/actions/attendance'
 import type { ColorScheme } from '@/lib/templates'
 
-export default function AttendanceForm({ weddingId, colors }: { weddingId: string; colors: ColorScheme }) {
+export default function AttendanceForm({ weddingId, colors, defaultName }: { weddingId: string; colors: ColorScheme; defaultName?: string }) {
   const submitWithId = submitAttendance.bind(null, weddingId)
   const [state, action, isPending] = useActionState<AttendanceState, FormData>(submitWithId, undefined)
   const [status, setStatus] = useState<'attending' | 'not_attending'>('attending')
@@ -33,6 +33,7 @@ export default function AttendanceForm({ weddingId, colors }: { weddingId: strin
         <input
           name="name"
           type="text"
+          defaultValue={defaultName ?? ''}
           placeholder="Tulis nama kamu..."
           required
           className="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-all"

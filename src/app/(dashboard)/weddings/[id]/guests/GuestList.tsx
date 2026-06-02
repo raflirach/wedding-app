@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { deleteGuest, updateRsvpStatus } from '@/app/actions/guests'
 
 type Guest = {
@@ -17,13 +18,37 @@ const STATUS_LABELS: Record<string, { label: string; badge: string }> = {
   not_attending: { label: 'Tidak Hadir', badge: 'badge-error' },
 }
 
+function CopyLinkButton({ slug, guestName }: { slug: string; guestName: string }) {
+  const [copied, setCopied] = useState(false)
+
+  function copy() {
+    const url = `${window.location.origin}/w/${slug}?to=${encodeURIComponent(guestName)}`
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      className="btn btn-ghost btn-xs text-info"
+    >
+      {copied ? 'Tersalin!' : 'Salin Link'}
+    </button>
+  )
+}
+
 export default function GuestList({
   guests,
   weddingId,
+  slug,
   pending,
 }: {
   guests: Guest[]
   weddingId: string
+  slug: string
   pending: number
 }) {
   if (guests.length === 0) {
@@ -86,15 +111,18 @@ export default function GuestList({
                       </select>
                     </td>
                     <td>
-                      <form action={deleteWithIds}>
-                        <button
-                          type="submit"
-                          className="btn btn-ghost btn-xs text-error"
-                          onClick={(e) => !confirm(`Hapus ${guest.name}?`) && e.preventDefault()}
-                        >
-                          Hapus
-                        </button>
-                      </form>
+                      <div className="flex gap-1">
+                        <CopyLinkButton slug={slug} guestName={guest.name} />
+                        <form action={deleteWithIds}>
+                          <button
+                            type="submit"
+                            className="btn btn-ghost btn-xs text-error"
+                            onClick={(e) => !confirm(`Hapus ${guest.name}?`) && e.preventDefault()}
+                          >
+                            Hapus
+                          </button>
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 )

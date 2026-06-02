@@ -9,7 +9,7 @@ import AttendanceForm from './AttendanceForm'
 import WishesDisplay from './WishesDisplay'
 import InvitationOpener from './InvitationOpener'
 
-type Props = { params: Promise<{ slug: string }> }
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ to?: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -36,8 +36,10 @@ const TEMPLATE_MAP = {
   floral: FloralTemplate,
 }
 
-export default async function InvitationPage({ params }: Props) {
+export default async function InvitationPage({ params, searchParams }: Props) {
   const { slug } = await params
+  const { to } = await searchParams
+  const guestName = to ? decodeURIComponent(to) : undefined
   const supabase = await createClient()
 
   const { data: wedding } = await supabase
@@ -72,6 +74,7 @@ export default async function InvitationPage({ params }: Props) {
       weddingDate={wedding.wedding_date}
       musicUrl={wedding.music_url ?? null}
       colors={colors}
+      guestName={guestName}
     >
       <Template
         wedding={wedding}
@@ -81,6 +84,7 @@ export default async function InvitationPage({ params }: Props) {
         wishes={wishes ?? []}
         photos={photos ?? []}
         weddingId={wedding.id}
+        guestName={guestName}
       />
     </InvitationOpener>
   )
