@@ -8,6 +8,7 @@ import Link from 'next/link'
 import type { WeddingActionResult } from '@/app/actions/weddings'
 import { TEMPLATES, COLOR_SCHEMES } from '@/lib/templates'
 import CoverPhotoUpload from '@/components/CoverPhotoUpload'
+import MusicUpload from '@/components/MusicUpload'
 
 export const weddingSchema = z.object({
   bride_name: z.string().min(2, 'Minimal 2 karakter'),
@@ -267,19 +268,13 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
         <div className="card-body">
           <h2 className="font-semibold text-base">Musik Latar</h2>
           <p className="text-sm text-base-content/60 mb-2">
-            Link file MP3 langsung untuk diputar di halaman undangan
+            Upload file MP3 — akan diputar otomatis di halaman undangan
           </p>
-          <input
-            {...register('music_url')}
-            type="url"
-            placeholder="https://example.com/lagu.mp3"
-            className="input input-bordered w-full"
+          <input type="hidden" {...register('music_url')} />
+          <MusicUpload
+            value={watch('music_url')}
+            onChange={(url) => setValue('music_url', url)}
           />
-          <label className="label">
-            <span className="label-text-alt text-base-content/40">
-              Pastikan link bisa diakses langsung (bukan halaman web)
-            </span>
-          </label>
         </div>
       </div>
 
