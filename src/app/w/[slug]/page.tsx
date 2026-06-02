@@ -55,6 +55,7 @@ export default async function InvitationPage({ params, searchParams }: Props) {
       .from('wishes')
       .select('id, name, message, created_at')
       .eq('wedding_id', wedding.id)
+      .eq('is_hidden', false)
       .order('created_at', { ascending: false }),
     supabase
       .from('wedding_photos')

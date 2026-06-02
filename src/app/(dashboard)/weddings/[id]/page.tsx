@@ -134,9 +134,12 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Actions */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <Link href={`/weddings/${id}/guests`} className="btn btn-primary">
           Kelola Tamu
+        </Link>
+        <Link href={`/weddings/${id}/wishes`} className="btn btn-outline">
+          Moderasi Ucapan
         </Link>
         <Link href={`/weddings/${id}/gallery`} className="btn btn-outline">
           Galeri Foto

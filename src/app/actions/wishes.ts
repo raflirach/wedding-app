@@ -2,7 +2,9 @@
 
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 
 const WishSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.'),
@@ -35,4 +37,37 @@ export async function submitWish(
 
   revalidatePath(`/w/`)
   return { success: true }
+}
+
+async function getAuthUser() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+  return { supabase, user }
+}
+
+export async function toggleWishVisibility(weddingId: string, wishId: string, isHidden: boolean) {
+  const { supabase, user } = await getAuthUser()
+
+  const { data: wedding } = await supabase
+    .from('weddings').select('id').eq('id', weddingId).eq('user_id', user.id).single()
+  if (!wedding) return
+
+  const admin = createAdminClient()
+  await admin.from('wishes').update({ is_hidden: !isHidden }).eq('id', wishId).eq('wedding_id', weddingId)
+
+  revalidatePath(`/weddings/${weddingId}/wishes`)
+}
+
+export async function deleteWish(weddingId: string, wishId: string) {
+  const { supabase, user } = await getAuthUser()
+
+  const { data: wedding } = await supabase
+    .from('weddings').select('id').eq('id', weddingId).eq('user_id', user.id).single()
+  if (!wedding) return
+
+  const admin = createAdminClient()
+  await admin.from('wishes').delete().eq('id', wishId).eq('wedding_id', weddingId)
+
+  revalidatePath(`/weddings/${weddingId}/wishes`)
 }
