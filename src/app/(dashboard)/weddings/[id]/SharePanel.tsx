@@ -1,12 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function SharePanel({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false)
+  const [origin, setOrigin] = useState('')
 
-  const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/w/${slug}`
+  useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
+
+  const url = `${origin}/w/${slug}`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&margin=10`
   const waText = encodeURIComponent(`Kami mengundang kehadiran Anda di acara pernikahan kami 💍\n\nBuka undangan di: ${url}`)
 
