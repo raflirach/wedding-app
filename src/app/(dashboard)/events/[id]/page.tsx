@@ -1,9 +1,10 @@
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { toggleEventPublish, deleteEvent } from '@/app/actions/events'
+import { toggleEventPublish } from '@/app/actions/events'
 import { getEventType } from '@/lib/events'
 import SharePanel from '../../weddings/[id]/SharePanel'
+import DeleteEventButton from './DeleteEventButton'
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -29,7 +30,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
   const eventType = getEventType(event.event_type)
   const toggleWithId = toggleEventPublish.bind(null, id, event.is_published)
-  const deleteWithId = deleteEvent.bind(null, id)
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -45,12 +45,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         </div>
         <div className="flex gap-2 shrink-0">
           <Link href={`/events/${id}/edit`} className="btn btn-outline btn-sm">Edit</Link>
-          <form action={deleteWithId}>
-            <button type="submit" className="btn btn-ghost btn-sm text-error"
-              onClick={(e) => !confirm('Hapus event ini?') && e.preventDefault()}>
-              Hapus
-            </button>
-          </form>
+          <DeleteEventButton id={id} />
         </div>
       </div>
 
