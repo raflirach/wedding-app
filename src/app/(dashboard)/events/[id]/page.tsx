@@ -20,9 +20,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
   if (!event) notFound()
 
-  const [{ count: rsvpCount }] = await Promise.all([
-    supabase.from('event_rsvp').select('*', { count: 'exact', head: true }).eq('event_id', id).eq('rsvp_status', 'attending'),
-  ])
+  const rsvpResult = await supabase
+    .from('event_rsvp')
+    .select('*', { count: 'exact', head: true })
+    .eq('event_id', id)
+    .eq('rsvp_status', 'attending')
+  const rsvpCount = rsvpResult.error ? 0 : (rsvpResult.count ?? 0)
 
   const eventType = getEventType(event.event_type)
   const toggleWithId = toggleEventPublish.bind(null, id, event.is_published)
