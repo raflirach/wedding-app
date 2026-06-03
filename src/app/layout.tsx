@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'cupcake')}catch(e){}` }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'pastel')}catch(e){}` }} />
       </head>
       <body suppressHydrationWarning>{children}</body>
     </html>

@@ -3,20 +3,19 @@
 import { useEffect, useState } from 'react'
 
 const THEMES = [
-  { id: 'cupcake',   label: 'Cupcake',   primary: '#93c5fd', base: '#faf7f5' },
-  { id: 'light',     label: 'Light',     primary: '#5b21b6', base: '#ffffff' },
-  { id: 'valentine', label: 'Valentine', primary: '#e96d7b', base: '#fff0f3' },
-  { id: 'garden',    label: 'Garden',    primary: '#5c7f67', base: '#e9e7e7' },
-  { id: 'nord',      label: 'Nord',      primary: '#5e81ac', base: '#eceff4' },
-  { id: 'dim',       label: 'Dim',       primary: '#9ca3af', base: '#2a323c' },
-  { id: 'dark',      label: 'Dark',      primary: '#818cf8', base: '#1f2937' },
+  { id: 'pastel',    label: 'Pastel',    primary: 'oklch(90% 0.063 306.703)',  base: 'oklch(100% 0 0)' },
+  { id: 'lemonade',  label: 'Lemonade',  primary: 'oklch(58.92% 0.199 134.6)', base: 'oklch(98.71% 0.02 123.72)' },
+  { id: 'winter',    label: 'Winter',    primary: 'oklch(56.86% 0.255 257.57)', base: 'oklch(100% 0 0)' },
+  { id: 'retro',     label: 'Retro',     primary: 'oklch(80% 0.114 19.571)',   base: 'oklch(91.637% 0.034 90.515)' },
+  { id: 'synthwave', label: 'Synthwave', primary: 'oklch(71% 0.202 349.761)',  base: 'oklch(15% 0.09 281.288)' },
+  { id: 'dracula',   label: 'Dracula',   primary: 'oklch(75.461% 0.183 346.812)', base: 'oklch(28.822% 0.022 277.508)' },
 ]
 
 export default function ThemeSelector() {
-  const [theme, setTheme] = useState('cupcake')
+  const [theme, setTheme] = useState('pastel')
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') ?? 'cupcake'
+    const saved = localStorage.getItem('theme') ?? 'pastel'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
   }, [])
