@@ -45,7 +45,7 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
           <p className="text-base-content/60 text-sm mt-1">/w/{wedding.slug}</p>
         </div>
         <div className="flex gap-2 shrink-0">
-          <Link href={`/weddings/${id}/edit`} className="btn btn-outline btn-sm">
+          <Link href={`/weddings/${id}/edit`} className="btn btn-outline btn-primary btn-sm w-16">
             Edit
           </Link>
           <DeleteButton id={id} />
@@ -66,7 +66,7 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
           <form action={toggleWithId}>
             <button
               type="submit"
-              className={`btn btn-sm ${wedding.is_published ? 'btn-ghost' : 'btn-primary'}`}
+              className={`btn btn-sm ${wedding.is_published ? 'btn-primary btn-outline' : 'btn-primary'}`}
             >
               {wedding.is_published ? 'Jadikan Draft' : 'Publikasikan'}
             </button>
@@ -108,6 +108,8 @@ export default async function WeddingDetailPage({ params }: { params: Promise<{ 
                 <span>{wedding.akad_time ?? '—'}</span>
                 <span className="text-base-content/60">Tempat</span>
                 <span>{wedding.akad_venue_name ?? '—'}</span>
+                <span className="text-base-content/60">Alamat</span>
+                <span>{wedding.akad_venue_address ?? '—'}</span>
               </div>
             </div>
           )}

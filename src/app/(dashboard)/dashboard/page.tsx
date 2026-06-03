@@ -31,14 +31,6 @@ export default async function DashboardPage() {
           </h1>
           <p className="text-base-content/60 mt-1">Kelola undangan pernikahanmu</p>
         </div>
-        <div className="flex gap-2">
-          <Link href="/events/new" className="btn btn-outline btn-primary">
-            + Buat Event
-          </Link>
-          <Link href="/weddings/new" className="btn btn-primary">
-            + Buat Undangan
-          </Link>
-        </div>
       </div>
 
       {/* Undangan Pernikahan */}

@@ -1,20 +1,29 @@
 import Link from 'next/link'
 
+const EVENT_TYPES = [
+  { icon: '💍', label: 'Pernikahan' },
+  { icon: '🤝', label: 'Reuni' },
+  { icon: '🤲', label: 'Syukuran' },
+  { icon: '🎂', label: 'Ulang Tahun' },
+  { icon: '🎓', label: 'Wisuda' },
+  { icon: '📅', label: 'Lainnya' },
+]
+
 const FEATURES = [
-  { icon: '🎨', title: '3 Desain Template', desc: 'Elegant, Modern, dan Floral — cocok untuk berbagai tema pernikahan' },
-  { icon: '🎨', title: '5 Skema Warna', desc: 'Blush Pink, Sage Green, Navy Blue, Champagne, dan Lavender' },
+  { icon: '🎨', title: '3 Template Desain', desc: 'Elegant, Modern, dan Floral — bisa dikustomisasi dengan 5 skema warna' },
+  { icon: '📅', title: '6 Jenis Acara', desc: 'Pernikahan, reuni, syukuran, ulang tahun, wisuda, dan event lainnya' },
+  { icon: '🖼️', title: 'Galeri Foto', desc: 'Upload foto untuk ditampilkan di undangan digitalmu' },
   { icon: '⏱️', title: 'Countdown Timer', desc: 'Hitung mundur otomatis menuju hari spesialmu' },
   { icon: '💌', title: 'RSVP & Ucapan', desc: 'Tamu konfirmasi kehadiran dan kirim ucapan langsung di undangan' },
-  { icon: '🖼️', title: 'Galeri Foto', desc: 'Upload foto prewedding untuk ditampilkan di undangan' },
   { icon: '🎵', title: 'Musik Latar', desc: 'Tambahkan lagu favorit yang diputar saat undangan dibuka' },
   { icon: '📲', title: 'Share & QR Code', desc: 'Bagikan via WhatsApp atau QR Code yang bisa langsung diunduh' },
   { icon: '👥', title: 'Kelola Tamu', desc: 'Manajemen daftar tamu lengkap dengan export ke CSV' },
 ]
 
 const TEMPLATES = [
-  { id: 'elegant', name: 'Elegant', desc: 'Klasik & romantis', icon: '🌸', bg: 'bg-rose-50', accent: 'bg-rose-400' },
-  { id: 'modern', name: 'Modern', desc: 'Bersih & minimalis', icon: '◆', bg: 'bg-slate-900', accent: 'bg-indigo-500' },
-  { id: 'floral', name: 'Floral', desc: 'Natural & botanical', icon: '🌿', bg: 'bg-emerald-50', accent: 'bg-emerald-500' },
+  { id: 'elegant', name: 'Elegant', desc: 'Klasik & romantis', icon: '🌸', bg: 'bg-rose-50', accent: 'bg-rose-400', text: 'text-rose-900' },
+  { id: 'modern', name: 'Modern', desc: 'Bersih & minimalis', icon: '◆', bg: 'bg-slate-900', accent: 'bg-indigo-500', text: 'text-white' },
+  { id: 'floral', name: 'Floral', desc: 'Natural & botanical', icon: '🌿', bg: 'bg-emerald-50', accent: 'bg-emerald-500', text: 'text-emerald-900' },
 ]
 
 export default function HomePage() {
@@ -24,7 +33,7 @@ export default function HomePage() {
       {/* Navbar */}
       <nav className="navbar bg-base-100/80 backdrop-blur-sm sticky top-0 z-40 border-b border-base-200 px-4 md:px-8">
         <div className="flex-1">
-          <span className="text-lg font-bold text-primary">💍 Wedding App</span>
+          <span className="text-lg font-bold text-primary">💍 Undangmanah</span>
         </div>
         <div className="flex-none gap-2">
           <Link href="/login" className="btn btn-ghost btn-sm">Masuk</Link>
@@ -35,17 +44,26 @@ export default function HomePage() {
       {/* Hero */}
       <section className="py-20 px-4 text-center bg-linear-to-b from-primary/5 to-base-100">
         <p className="text-sm font-medium text-primary mb-4 tracking-wide">
-          ✨ Platform Undangan Pernikahan Digital
+          ✨ Platform Undangan Digital untuk Semua Acara
         </p>
         <h1 className="text-4xl md:text-6xl font-bold text-base-content leading-tight mb-4">
-          Buat Undangan Pernikahan
+          Undangan Digital
           <br />
-          <span className="text-primary">yang Berkesan</span>
+          <span className="text-primary">untuk Semua Momen</span>
         </h1>
-        <p className="text-base-content/60 text-lg max-w-xl mx-auto mb-10">
-          Desain undangan digital elegan dalam hitungan menit.
-          Lengkap dengan RSVP, galeri foto, musik, dan countdown timer.
+        <p className="text-base-content/60 text-lg max-w-xl mx-auto mb-8">
+          Buat undangan digital elegan dalam hitungan menit — pernikahan, reuni, syukuran, ulang tahun, wisuda, dan banyak lagi.
         </p>
+
+        {/* Event type pills */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {EVENT_TYPES.map((e) => (
+            <span key={e.label} className="badge badge-outline badge-lg gap-1 px-3">
+              {e.icon} {e.label}
+            </span>
+          ))}
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/register" className="btn btn-primary btn-lg">
             Buat Undangan Sekarang
@@ -67,7 +85,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TEMPLATES.map((t) => (
               <div key={t.id} className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-                {/* Template mini preview */}
                 <div className={`${t.bg} h-40 flex flex-col items-center justify-center gap-2 relative`}>
                   <span className="text-4xl">{t.icon}</span>
                   <div className={`w-16 h-0.5 ${t.accent}`} />
@@ -113,8 +130,8 @@ export default function HomePage() {
           <h2 className="text-2xl md:text-3xl font-bold mb-10">Cara Membuatnya</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: '01', title: 'Daftar & Isi Data', desc: 'Buat akun gratis dan isi informasi pasangan, tanggal, dan lokasi pernikahan' },
-              { step: '02', title: 'Pilih Desain', desc: 'Pilih template dan skema warna yang paling sesuai dengan tema pernikahanmu' },
+              { step: '01', title: 'Daftar & Pilih Acara', desc: 'Buat akun gratis, pilih jenis acara, dan isi informasi lengkap acaramu' },
+              { step: '02', title: 'Pilih Desain', desc: 'Pilih template dan skema warna yang paling sesuai dengan tema acaramu' },
               { step: '03', title: 'Bagikan ke Tamu', desc: 'Share via WhatsApp, QR Code, atau copy link — tamu langsung bisa RSVP' },
             ].map((s) => (
               <div key={s.step} className="flex flex-col items-center">
@@ -137,14 +154,19 @@ export default function HomePage() {
         <p className="text-base-content/60 mb-8">
           Bergabung dan buat undangan digital pertamamu sekarang — gratis.
         </p>
-        <Link href="/register" className="btn btn-primary btn-lg">
-          Mulai Sekarang — Gratis
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/register?type=wedding" className="btn btn-primary btn-lg">
+            💍 Buat Undangan Pernikahan
+          </Link>
+          <Link href="/register?type=event" className="btn btn-outline btn-lg">
+            📅 Buat Undangan Event
+          </Link>
+        </div>
       </section>
 
       {/* Footer */}
       <footer className="py-8 text-center text-sm text-base-content/40 border-t border-base-200">
-        <p>💍 Wedding App · Dibuat dengan ❤️ untuk pasangan Indonesia</p>
+        <p>💍 Undangmanah · Dibuat dengan ❤️ untuk momen spesialmu</p>
       </footer>
     </main>
   )

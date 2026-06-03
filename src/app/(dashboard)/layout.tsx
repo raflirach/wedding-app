@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import UserMenu from './UserMenu'
+import ThemeSelector from '@/components/ThemeSelector'
+import FabMenu from './FabMenu'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -17,7 +19,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="flex-1">
           <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-xl">💍</span>
-            <span className="font-bold text-primary hidden sm:block">Wedding App</span>
+            <span className="font-bold text-primary hidden sm:block">Undangmanah</span>
           </Link>
         </div>
 
@@ -27,16 +29,16 @@ export default async function DashboardLayout({ children }: { children: React.Re
             Dashboard
           </Link>
           <Link href="/weddings/new" className="btn btn-ghost btn-sm">
-            + Buat Undangan
+            Buat Undangan
+          </Link>
+          <Link href="/events/new" className="btn btn-ghost btn-sm">
+            Buat Event
           </Link>
         </div>
 
         {/* User menu */}
-        <div className="flex-none flex items-center gap-2">
-          {/* Mobile: buat undangan */}
-          <Link href="/weddings/new" className="btn btn-primary btn-sm md:hidden">
-            + Buat
-          </Link>
+        <div className="flex-none flex items-center gap-1">
+          <ThemeSelector />
 
           {user && (
             <UserMenu
@@ -50,6 +52,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <main className="container mx-auto px-4 py-8 max-w-5xl">
         {children}
       </main>
+      <FabMenu />
     </div>
   )
 }

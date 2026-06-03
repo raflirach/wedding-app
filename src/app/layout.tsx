@@ -12,7 +12,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id" data-theme="cupcake">
+    <html lang="id" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'cupcake')}catch(e){}` }} />
+      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   )

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
+import { useState, useRef } from 'react'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Link from 'next/link'
@@ -55,6 +55,40 @@ export const weddingSchema = z.object({
 })
 
 export type WeddingFormValues = z.infer<typeof weddingSchema>
+
+function toDisplayDate(isoDate?: string): string {
+  if (!isoDate) return ''
+  const [y, m, d] = isoDate.split('-')
+  return (y && m && d) ? `${d}/${m}/${y}` : isoDate
+}
+
+function DatePickerInput({ value, onChange, id, className }: {
+  value?: string; onChange: (val: string) => void; id?: string; className?: string
+}) {
+  const ref = useRef<HTMLInputElement>(null)
+  return (
+    <div className="relative">
+      <input type="text" readOnly value={value ? toDisplayDate(value) : ''} placeholder="dd/mm/yyyy"
+        className={`${className} cursor-pointer`} onClick={() => ref.current?.showPicker()} />
+      <input ref={ref} id={id} type="date" className="absolute inset-0 w-full opacity-0 pointer-events-none"
+        tabIndex={-1} value={value || ''} onChange={(e) => onChange(e.target.value)} />
+    </div>
+  )
+}
+
+function TimePickerInput({ value, onChange, id, className }: {
+  value?: string; onChange: (val: string) => void; id?: string; className?: string
+}) {
+  const ref = useRef<HTMLInputElement>(null)
+  return (
+    <div className="relative">
+      <input type="text" readOnly value={value ? value.slice(0, 5) : ''} placeholder="HH:MM"
+        className={`${className} cursor-pointer`} onClick={() => ref.current?.showPicker()} />
+      <input ref={ref} id={id} type="time" className="absolute inset-0 w-full opacity-0 pointer-events-none"
+        tabIndex={-1} value={value || ''} onChange={(e) => onChange(e.target.value)} />
+    </div>
+  )
+}
 
 function toSlug(a: string, b: string) {
   return `${a}-dan-${b}`
@@ -114,16 +148,13 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-6">
-
       {/* Data Mempelai */}
       <div className="card bg-base-100 shadow">
         <div className="card-body space-y-4">
           <h2 className="font-semibold text-base">Data Mempelai</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
-              <label className="label" htmlFor="bride_name">
-                <span className="label-text">Mempelai Wanita *</span>
-              </label>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Mempelai Wanita *</legend>
               <input
                 id="bride_name"
                 {...register('bride_name', { onChange: (e) => syncSlug(e.target.value, groomName) })}
@@ -131,11 +162,9 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
                 className={`input input-bordered ${errors.bride_name ? 'input-error' : ''}`}
               />
               {errors.bride_name && <span className="text-error text-xs mt-1">{errors.bride_name.message}</span>}
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="groom_name">
-                <span className="label-text">Mempelai Pria *</span>
-              </label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Mempelai Pria *</legend>
               <input
                 id="groom_name"
                 {...register('groom_name', { onChange: (e) => syncSlug(brideName, e.target.value) })}
@@ -143,7 +172,7 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
                 className={`input input-bordered ${errors.groom_name ? 'input-error' : ''}`}
               />
               {errors.groom_name && <span className="text-error text-xs mt-1">{errors.groom_name.message}</span>}
-            </div>
+            </fieldset>
           </div>
         </div>
       </div>
@@ -153,45 +182,34 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
         <div className="card-body space-y-4">
           <h2 className="font-semibold text-base">Detail Lengkap Mempelai</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
-              <label className="label" htmlFor="bride_full_name">
-                <span className="label-text">Nama Lengkap Mempelai Wanita</span>
-              </label>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Lengkap Mempelai Wanita</legend>
               <input id="bride_full_name" {...register('bride_full_name')} type="text"
                 placeholder="Contoh: Sari Dewi Kusuma, S.Pd" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="groom_full_name">
-                <span className="label-text">Nama Lengkap Mempelai Pria</span>
-              </label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Lengkap Mempelai Pria</legend>
               <input id="groom_full_name" {...register('groom_full_name')} type="text"
                 placeholder="Contoh: Budi Santoso, S.T" className="input input-bordered" />
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Orang Tua Mempelai Wanita</legend>
+              <input id="bride_parents" {...register('bride_parents')} type="text"
+                placeholder="Putri dari Bapak Ahmad & Ibu Siti" className="input input-bordered" />
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Orang Tua Mempelai Pria</legend>
+              <input id="groom_parents" {...register('groom_parents')} type="text"
+                placeholder="Putra dari Bapak Hendra & Ibu Wati" className="input input-bordered" />
+            </fieldset>
+            <div className="col-span-full">
+              <fieldset className="fieldset w-full!">
+                <legend className="fieldset-legend">Kata Pembuka</legend>
+                <textarea id="opening_text" {...register('opening_text')} rows={3}
+                  placeholder="Contoh: Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami..."
+                  className="textarea textarea-bordered w-full" />
+              </fieldset>
             </div>
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="bride_parents">
-              <span className="label-text">Nama Orang Tua Mempelai Wanita</span>
-            </label>
-            <input id="bride_parents" {...register('bride_parents')} type="text"
-              placeholder="Putri dari Bapak Ahmad & Ibu Siti" className="input input-bordered" />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="groom_parents">
-              <span className="label-text">Nama Orang Tua Mempelai Pria</span>
-            </label>
-            <input id="groom_parents" {...register('groom_parents')} type="text"
-              placeholder="Putra dari Bapak Hendra & Ibu Wati" className="input input-bordered" />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="opening_text">
-              <span className="label-text">Kata Pembuka</span>
-            </label>
-            <textarea id="opening_text" {...register('opening_text')} rows={3}
-              placeholder="Contoh: Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami..."
-              className="textarea textarea-bordered" />
-            <label className="label">
-              <span className="label-text-alt text-base-content/40">Tampil di bagian atas undangan</span>
-            </label>
           </div>
         </div>
       </div>
@@ -204,26 +222,30 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
             <p className="text-sm text-base-content/60 mt-1">Kosongkan jika tidak ada acara akad terpisah</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
-              <label className="label" htmlFor="akad_date"><span className="label-text">Tanggal</span></label>
-              <input id="akad_date" {...register('akad_date')} type="date" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="akad_time"><span className="label-text">Waktu</span></label>
-              <input id="akad_time" {...register('akad_time')} type="time" className="input input-bordered" />
-            </div>
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="akad_venue_name"><span className="label-text">Nama Tempat</span></label>
-            <input id="akad_venue_name" {...register('akad_venue_name')} type="text" placeholder="Masjid Al-Ikhlas / Rumah Mempelai" className="input input-bordered" />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="akad_venue_address"><span className="label-text">Alamat</span></label>
-            <textarea id="akad_venue_address" {...register('akad_venue_address')} placeholder="Alamat lengkap..." className="textarea textarea-bordered" rows={2} />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="akad_venue_maps_url"><span className="label-text">Link Google Maps</span></label>
-            <input id="akad_venue_maps_url" {...register('akad_venue_maps_url')} type="url" placeholder="https://maps.google.com/..." className="input input-bordered" />
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Tanggal</legend>
+              <Controller control={control} name="akad_date" render={({ field }) => (
+                <DatePickerInput id="akad_date" value={field.value} onChange={field.onChange} className="input input-bordered w-full" />
+              )} />
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Waktu</legend>
+              <Controller control={control} name="akad_time" render={({ field }) => (
+                <TimePickerInput id="akad_time" value={field.value} onChange={field.onChange} className="input input-bordered w-full" />
+              )} />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Nama Tempat</legend>
+              <input id="akad_venue_name" {...register('akad_venue_name')} type="text" placeholder="Masjid Al-Ikhlas / Rumah Mempelai" className="input input-bordered w-full" />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Alamat</legend>
+              <textarea id="akad_venue_address" {...register('akad_venue_address')} placeholder="Alamat lengkap..." className="textarea textarea-bordered w-full" rows={2} />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Link Google Maps</legend>
+              <input id="akad_venue_maps_url" {...register('akad_venue_maps_url')} type="url" placeholder="https://maps.google.com/..." className="input input-bordered w-full" />
+            </fieldset>
           </div>
         </div>
       </div>
@@ -233,26 +255,30 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
         <div className="card-body space-y-4">
           <h2 className="font-semibold text-base">Resepsi</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
-              <label className="label" htmlFor="wedding_date"><span className="label-text">Tanggal</span></label>
-              <input id="wedding_date" {...register('wedding_date')} type="date" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="wedding_time"><span className="label-text">Waktu</span></label>
-              <input id="wedding_time" {...register('wedding_time')} type="time" className="input input-bordered" />
-            </div>
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="venue_name"><span className="label-text">Nama Venue</span></label>
-            <input id="venue_name" {...register('venue_name')} type="text" placeholder="Gedung Serbaguna XYZ" className="input input-bordered" />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="venue_address"><span className="label-text">Alamat</span></label>
-            <textarea id="venue_address" {...register('venue_address')} placeholder="Alamat lengkap..." className="textarea textarea-bordered" rows={2} />
-          </div>
-          <div className="form-control">
-            <label className="label" htmlFor="venue_maps_url"><span className="label-text">Link Google Maps</span></label>
-            <input id="venue_maps_url" {...register('venue_maps_url')} type="url" placeholder="https://maps.google.com/..." className="input input-bordered" />
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Tanggal</legend>
+              <Controller control={control} name="wedding_date" render={({ field }) => (
+                <DatePickerInput id="wedding_date" value={field.value} onChange={field.onChange} className="input input-bordered w-full" />
+              )} />
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Waktu</legend>
+              <Controller control={control} name="wedding_time" render={({ field }) => (
+                <TimePickerInput id="wedding_time" value={field.value} onChange={field.onChange} className="input input-bordered w-full" />
+              )} />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Nama Venue</legend>
+              <input id="venue_name" {...register('venue_name')} type="text" placeholder="Gedung Serbaguna XYZ" className="input input-bordered w-full" />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Alamat</legend>
+              <textarea id="venue_address" {...register('venue_address')} placeholder="Alamat lengkap..." className="textarea textarea-bordered w-full" rows={2} />
+            </fieldset>
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend">Link Google Maps</legend>
+              <input id="venue_maps_url" {...register('venue_maps_url')} type="url" placeholder="https://maps.google.com/..." className="input input-bordered w-full" />
+            </fieldset>
           </div>
         </div>
       </div>
@@ -294,14 +320,14 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
                 key={c.id}
                 type="button"
                 onClick={() => setValue('color_scheme', c.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 text-sm transition-all ${
+                className={`btn flex items-center gap-2 px-4 py-2 border-2 text-sm transition-all ${
                   selectedColor === c.id
                     ? 'border-primary font-semibold'
                     : 'border-base-300 hover:border-primary/40'
                 }`}
               >
                 <span
-                  className="w-4 h-4 rounded-full border border-white shadow-sm"
+                  className="w-4 h-4 border rounded-md border-white shadow-sm"
                   style={{ backgroundColor: c.swatch }}
                 />
                 {c.name}
@@ -369,18 +395,18 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
           {storyFields.map((field, i) => (
             <div key={field.id} className="border border-base-300 rounded-xl p-4 space-y-3">
               <div className="grid grid-cols-2 gap-3">
-                <div className="form-control">
-                  <label className="label"><span className="label-text text-xs">Tahun / Tanggal</span></label>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend text-xs">Tahun / Tanggal</legend>
                   <input {...register(`love_story.${i}.date`)} type="text" placeholder="2020 / 14 Feb 2021" className="input input-bordered input-sm" />
-                </div>
-                <div className="form-control">
-                  <label className="label"><span className="label-text text-xs">Judul Momen</span></label>
+                </fieldset>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend text-xs">Judul Momen</legend>
                   <input {...register(`love_story.${i}.title`)} type="text" placeholder="Pertama Bertemu" className="input input-bordered input-sm" />
-                </div>
-              </div>
-              <div className="form-control">
-                <label className="label"><span className="label-text text-xs">Cerita singkat (opsional)</span></label>
-                <textarea {...register(`love_story.${i}.description`)} rows={2} placeholder="Kami pertama kali bertemu di..." className="textarea textarea-bordered textarea-sm" />
+                </fieldset>
+                <fieldset className="fieldset col-span-full">
+                  <legend className="fieldset-legend text-xs">Cerita singkat (opsional)</legend>
+                  <textarea {...register(`love_story.${i}.description`)} rows={2} placeholder="Kami pertama kali bertemu di..." className="textarea textarea-bordered textarea-sm w-full" />
+                </fieldset>
               </div>
               <button type="button" onClick={() => removeStory(i)} className="btn btn-ghost btn-xs text-error">
                 Hapus
@@ -407,18 +433,18 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
           {timelineFields.map((field, i) => (
             <div key={field.id} className="border border-base-300 rounded-xl p-4 space-y-3">
               <div className="grid grid-cols-2 gap-3">
-                <div className="form-control">
-                  <label className="label"><span className="label-text text-xs">Pukul</span></label>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend text-xs">Pukul</legend>
                   <input {...register(`timeline.${i}.time`)} type="text" placeholder="08:00" className="input input-bordered input-sm" />
-                </div>
-                <div className="form-control">
-                  <label className="label"><span className="label-text text-xs">Nama Acara</span></label>
+                </fieldset>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend text-xs">Nama Acara</legend>
                   <input {...register(`timeline.${i}.title`)} type="text" placeholder="Akad Nikah" className="input input-bordered input-sm" />
-                </div>
-              </div>
-              <div className="form-control">
-                <label className="label"><span className="label-text text-xs">Keterangan (opsional)</span></label>
-                <input {...register(`timeline.${i}.description`)} type="text" placeholder="Masjid Al-Ikhlas" className="input input-bordered input-sm" />
+                </fieldset>
+                <fieldset className="fieldset col-span-full">
+                  <legend className="fieldset-legend text-xs">Keterangan (opsional)</legend>
+                  <input {...register(`timeline.${i}.description`)} type="text" placeholder="Masjid Al-Ikhlas" className="input input-bordered input-sm w-full" />
+                </fieldset>
               </div>
               <button type="button" onClick={() => removeTimeline(i)} className="btn btn-ghost btn-xs text-error">
                 Hapus
@@ -444,40 +470,40 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               Nomor rekening untuk transfer hadiah — tampil di undangan
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="form-control">
-              <label className="label" htmlFor="bank_1_name"><span className="label-text">Nama Bank 1</span></label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Bank 1</legend>
               <input id="bank_1_name" {...register('bank_1_name')} type="text"
                 placeholder="BCA / BNI / Mandiri..." className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="bank_1_account_number"><span className="label-text">Nomor Rekening</span></label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nomor Rekening</legend>
               <input id="bank_1_account_number" {...register('bank_1_account_number')} type="text"
                 placeholder="1234567890" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="bank_1_account_name"><span className="label-text">Atas Nama</span></label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Atas Nama</legend>
               <input id="bank_1_account_name" {...register('bank_1_account_name')} type="text"
                 placeholder="Nama pemilik rekening" className="input input-bordered" />
-            </div>
+            </fieldset>
           </div>
           <div className="divider my-0 text-xs text-base-content/30">Bank kedua (opsional)</div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="form-control">
-              <label className="label" htmlFor="bank_2_name"><span className="label-text">Nama Bank 2</span></label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nama Bank 2</legend>
               <input id="bank_2_name" {...register('bank_2_name')} type="text"
                 placeholder="BCA / BNI / Mandiri..." className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="bank_2_account_number"><span className="label-text">Nomor Rekening</span></label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Nomor Rekening</legend>
               <input id="bank_2_account_number" {...register('bank_2_account_number')} type="text"
                 placeholder="1234567890" className="input input-bordered" />
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="bank_2_account_name"><span className="label-text">Atas Nama</span></label>
+            </fieldset>
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Atas Nama</legend>
               <input id="bank_2_account_name" {...register('bank_2_account_name')} type="text"
                 placeholder="Nama pemilik rekening" className="input input-bordered" />
-            </div>
+            </fieldset>
           </div>
         </div>
       </div>

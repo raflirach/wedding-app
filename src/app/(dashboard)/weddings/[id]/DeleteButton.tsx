@@ -9,7 +9,7 @@ export default function DeleteButton({ id }: { id: string }) {
     <form action={deleteWithId}>
       <button
         type="submit"
-        className="btn btn-error btn-outline btn-sm"
+        className="btn btn-error btn-outline btn-sm w-16"
         onClick={(e) => {
           if (!confirm('Hapus undangan ini? Semua data tamu juga akan terhapus.')) {
             e.preventDefault()

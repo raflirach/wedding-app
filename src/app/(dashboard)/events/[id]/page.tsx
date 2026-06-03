@@ -59,7 +59,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </p>
           </div>
           <form action={toggleWithId}>
-            <button type="submit" className={`btn btn-sm ${event.is_published ? 'btn-ghost' : 'btn-primary'}`}>
+            <button type="submit" className={`btn btn-sm ${event.is_published ? 'btn-primary btn-outline' : 'btn-primary'}`}>
               {event.is_published ? 'Jadikan Draft' : 'Publikasikan'}
             </button>
           </form>

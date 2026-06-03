@@ -32,7 +32,7 @@ export default function SharePanel({ slug, pathPrefix = 'w' }: { slug: string; p
           <div className="input input-bordered flex-1 flex items-center text-sm text-base-content/60 overflow-hidden">
             <span className="truncate">/{pathPrefix}/{slug}</span>
           </div>
-          <button onClick={copyLink} className={`btn btn-sm ${copied ? 'btn-success' : 'btn-outline'}`}>
+          <button onClick={copyLink} className={`btn btn-md ${copied ? 'btn-success' : 'btn-outline'}`}>
             {copied ? '✓ Tersalin' : 'Salin'}
           </button>
         </div>
