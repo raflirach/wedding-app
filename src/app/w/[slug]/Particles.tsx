@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import type { ColorScheme } from '@/lib/templates'
 
 export type ParticleVariant = 'elegant' | 'modern' | 'floral'
@@ -24,11 +24,13 @@ function gen(count: number, minDur: number, maxDur: number, minSize: number, max
 }
 
 export default function Particles({ variant, colors }: { variant: ParticleVariant; colors: ColorScheme }) {
-  const particles = useMemo(() => {
-    if (variant === 'elegant') return gen(18, 10, 18, 5, 11)
-    if (variant === 'modern') return gen(14, 5, 10, 4, 9)
-    return gen(20, 12, 22, 6, 14)
-  }, [variant]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [particles, setParticles] = useState<P[]>([])
+
+  useEffect(() => {
+    if (variant === 'elegant') setParticles(gen(18, 10, 18, 5, 11))
+    else if (variant === 'modern') setParticles(gen(14, 5, 10, 4, 9))
+    else setParticles(gen(20, 12, 22, 6, 14))
+  }, [variant])
 
   return (
     <div
