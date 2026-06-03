@@ -47,6 +47,12 @@ export default async function EventPage({ params, searchParams }: Props) {
     .neq('is_hidden', true)
     .order('created_at', { ascending: false })
 
+  const { data: photos } = await supabase
+    .from('event_photos')
+    .select('id, url')
+    .eq('event_id', event.id)
+    .order('position')
+
   const templateId = getTemplate(event.theme ?? 'elegant')
   const colors = getColorScheme(event.color_scheme ?? 'blush')
   const Template = TEMPLATE_MAP[templateId]
@@ -106,7 +112,7 @@ export default async function EventPage({ params, searchParams }: Props) {
           AttendanceForm={(props) => <EventAttendanceForm {...props} eventId={event.id} />}
           WishesDisplayComponent={WishesDisplay}
           wishes={wishes ?? []}
-          photos={[]}
+          photos={photos ?? []}
           weddingId={event.id}
           guestName={guestName}
         />

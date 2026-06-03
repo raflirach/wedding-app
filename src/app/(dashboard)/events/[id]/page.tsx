@@ -101,6 +101,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <div className="grid grid-cols-2 gap-3">
         <Link href={`/e/${event.slug}`} className="btn btn-outline" target="_blank">Lihat Undangan</Link>
         <Link href={`/events/${id}/edit`} className="btn btn-primary">Edit Event</Link>
+        <Link href={`/events/${id}/gallery`} className="btn btn-outline col-span-2">🖼️ Galeri Foto</Link>
       </div>
 
       <SharePanel slug={event.slug} pathPrefix="e" />
