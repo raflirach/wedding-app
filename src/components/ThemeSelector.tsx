@@ -12,10 +12,10 @@ const THEMES = [
 ]
 
 export default function ThemeSelector() {
-  const [theme, setTheme] = useState('pastel')
+  const [theme, setTheme] = useState('winter')
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') ?? 'pastel'
+    const saved = localStorage.getItem('theme') ?? 'winter'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
   }, [])
