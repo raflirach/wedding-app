@@ -11,10 +11,11 @@ type Props = {
   colors: ColorScheme
   children: React.ReactNode
   guestName?: string
+  label?: string
 }
 
 export default function InvitationOpener({
-  title, subtitle, weddingDate, musicUrl, colors, children, guestName,
+  title, subtitle, weddingDate, musicUrl, colors, children, guestName, label = 'Undangan Pernikahan',
 }: Props) {
   const [opened, setOpened] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -60,7 +61,7 @@ export default function InvitationOpener({
             className="text-xs tracking-[0.4em] uppercase mb-8 font-light"
             style={{ color: colors.textMuted }}
           >
-            Undangan Pernikahan
+            {label}
           </p>
 
           <h1

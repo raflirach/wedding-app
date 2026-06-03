@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, Playfair_Display, Lora } from 'next/font/google'
 import { createClient } from '@/lib/supabase/server'
 import { getTemplate, getColorScheme } from '@/lib/templates'
+import { getEventType } from '@/lib/events'
 
 import ElegantTemplate from '@/app/w/[slug]/templates/Elegant'
 import ModernTemplate from '@/app/w/[slug]/templates/Modern'
@@ -50,6 +51,7 @@ export default async function EventPage({ params, searchParams }: Props) {
   const colors = getColorScheme(event.color_scheme ?? 'blush')
   const Template = TEMPLATE_MAP[templateId]
   const font = FONT_MAP[templateId]
+  const eventType = getEventType(event.event_type)
 
   // Map event data to WeddingData structure for template reuse
   const weddingData = {
@@ -96,6 +98,7 @@ export default async function EventPage({ params, searchParams }: Props) {
         musicUrl={event.music_url ?? null}
         colors={colors}
         guestName={guestName}
+        label={`Undangan ${eventType.label}`}
       >
         <Template
           wedding={weddingData}
