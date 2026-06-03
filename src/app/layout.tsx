@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" data-theme="cupcake">
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   )
 }
