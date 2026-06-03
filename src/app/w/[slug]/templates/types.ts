@@ -42,6 +42,9 @@ export type WeddingData = {
   timeline: TimelineItem[] | null
   love_story: StoryMilestone[] | null
   show_pattern: boolean | null
+  event_type?: string | null
+  event_title?: string | null
+  host_name?: string | null
 }
 
 export type Wish = {

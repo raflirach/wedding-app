@@ -79,8 +79,8 @@ export default async function InvitationPage({ params, searchParams }: Props) {
   return (
     <div className={font.className}>
     <InvitationOpener
-      brideName={wedding.bride_name}
-      groomName={wedding.groom_name}
+      title={wedding.bride_name}
+      subtitle={wedding.groom_name}
       weddingDate={wedding.wedding_date}
       musicUrl={wedding.music_url ?? null}
       colors={colors}

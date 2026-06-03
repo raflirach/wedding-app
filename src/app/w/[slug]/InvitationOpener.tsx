@@ -4,8 +4,8 @@ import { useRef, useState } from 'react'
 import type { ColorScheme } from '@/lib/templates'
 
 type Props = {
-  brideName: string
-  groomName: string
+  title: string
+  subtitle?: string | null
   weddingDate: string | null
   musicUrl: string | null
   colors: ColorScheme
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export default function InvitationOpener({
-  brideName, groomName, weddingDate, musicUrl, colors, children, guestName,
+  title, subtitle, weddingDate, musicUrl, colors, children, guestName,
 }: Props) {
   const [opened, setOpened] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -67,17 +67,21 @@ export default function InvitationOpener({
             className="text-5xl md:text-7xl font-serif font-bold leading-none"
             style={{ color: colors.textDark }}
           >
-            {brideName}
+            {title}
           </h1>
-          <p className="text-4xl font-serif italic my-3" style={{ color: colors.primary }}>
-            &amp;
-          </p>
-          <h1
-            className="text-5xl md:text-7xl font-serif font-bold leading-none"
-            style={{ color: colors.textDark }}
-          >
-            {groomName}
-          </h1>
+          {subtitle ? (
+            <>
+              <p className="text-4xl font-serif italic my-3" style={{ color: colors.primary }}>
+                &amp;
+              </p>
+              <h1
+                className="text-5xl md:text-7xl font-serif font-bold leading-none"
+                style={{ color: colors.textDark }}
+              >
+                {subtitle}
+              </h1>
+            </>
+          ) : null}
 
           {weddingDate && (
             <p className="mt-5 text-sm font-light" style={{ color: colors.textMuted }}>

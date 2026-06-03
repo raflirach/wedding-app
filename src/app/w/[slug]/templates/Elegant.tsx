@@ -9,8 +9,11 @@ import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { WeddingRings, ElegantDivider } from './Ornaments'
 import Particles from '../Particles'
+import { isWeddingType, getEventType } from '@/lib/events'
 
 export default function ElegantTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
+  const isWedding = isWeddingType(wedding.event_type)
+  const eventTypeObj = getEventType(wedding.event_type)
   return (
     <main style={{
       backgroundColor: colors.bg,
@@ -52,28 +55,41 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
           className="text-xs tracking-[0.4em] uppercase mb-8 font-light"
           style={{ color: colors.textMuted, animation: 'el-fade-in 0.8s ease both 0.2s' }}
         >
-          — Undangan Pernikahan —
+          — {isWedding ? 'Undangan Pernikahan' : eventTypeObj.label} —
         </p>
         <div className="space-y-1">
-          <h1
-            className="text-6xl md:text-8xl font-bold leading-none"
-            style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.4s' }}
-          >
-            {wedding.bride_name}
-          </h1>
-          <p
-            className="text-4xl italic"
-            style={{ color: colors.primary, animation: 'el-fade-in 0.8s ease both 0.75s' }}
-          >
-            &amp;
-          </p>
-          <h1
-            className="text-6xl md:text-8xl font-bold leading-none"
-            style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.9s' }}
-          >
-            {wedding.groom_name}
-          </h1>
-          <div className="flex justify-center mt-8"><WeddingRings colors={colors} size={56} /></div>
+          {isWedding ? (
+            <>
+              <h1
+                className="text-6xl md:text-8xl font-bold leading-none"
+                style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.4s' }}
+              >
+                {wedding.bride_name}
+              </h1>
+              <p
+                className="text-4xl italic"
+                style={{ color: colors.primary, animation: 'el-fade-in 0.8s ease both 0.75s' }}
+              >
+                &amp;
+              </p>
+              <h1
+                className="text-6xl md:text-8xl font-bold leading-none"
+                style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.9s' }}
+              >
+                {wedding.groom_name}
+              </h1>
+            </>
+          ) : (
+            <h1
+              className="text-6xl md:text-8xl font-bold leading-none"
+              style={{ color: colors.textDark, animation: 'el-fade-up 0.9s ease both 0.4s' }}
+            >
+              {wedding.event_title || wedding.bride_name}
+            </h1>
+          )}
+          {isWedding && (
+            <div className="flex justify-center mt-8"><WeddingRings colors={colors} size={56} /></div>
+          )}
         </div>
         <div className="flex items-center justify-center gap-4 mt-10" style={{ animation: 'el-fade-in 0.8s ease both 1.2s' }}>
           <div className="h-px w-16 origin-left" style={{ backgroundColor: colors.accent, animation: 'el-line-grow 0.8s ease both 1.3s' }} />
@@ -87,7 +103,7 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
           {wedding.opening_text || 'Bersama keluarga, kami mengundang kehadiran Anda'}
         </p>
 
-        {(wedding.bride_parents || wedding.groom_parents) && (
+        {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto text-sm" style={{ animation: 'el-fade-up 0.8s ease both 1.6s' }}>
             {wedding.bride_parents && (
               <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.primaryLight }}>
@@ -122,17 +138,19 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
       )}
 
       {/* Akad Nikah */}
-      <AnimatedSection animation="fade-up">
-        <EventSection
-          label="Akad Nikah"
-          date={wedding.akad_date}
-          time={wedding.akad_time}
-          venueName={wedding.akad_venue_name}
-          venueAddress={wedding.akad_venue_address}
-          venueMapsUrl={wedding.akad_venue_maps_url}
-          colors={colors}
-        />
-      </AnimatedSection>
+      {isWedding && (
+        <AnimatedSection animation="fade-up">
+          <EventSection
+            label="Akad Nikah"
+            date={wedding.akad_date}
+            time={wedding.akad_time}
+            venueName={wedding.akad_venue_name}
+            venueAddress={wedding.akad_venue_address}
+            venueMapsUrl={wedding.akad_venue_maps_url}
+            colors={colors}
+          />
+        </AnimatedSection>
+      )}
 
       {/* Resepsi */}
       <AnimatedSection animation="fade-up" delay={100}>

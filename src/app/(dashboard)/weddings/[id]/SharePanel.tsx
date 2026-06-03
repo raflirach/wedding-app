@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-export default function SharePanel({ slug }: { slug: string }) {
+export default function SharePanel({ slug, pathPrefix = 'w' }: { slug: string; pathPrefix?: string }) {
   const [copied, setCopied] = useState(false)
   const [origin, setOrigin] = useState('')
 
@@ -11,7 +11,7 @@ export default function SharePanel({ slug }: { slug: string }) {
     setOrigin(window.location.origin)
   }, [])
 
-  const url = `${origin}/w/${slug}`
+  const url = `${origin}/${pathPrefix}/${slug}`
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&margin=10`
   const waText = encodeURIComponent(`Kami mengundang kehadiran Anda di acara pernikahan kami 💍\n\nBuka undangan di: ${url}`)
 
@@ -30,7 +30,7 @@ export default function SharePanel({ slug }: { slug: string }) {
         {/* Link */}
         <div className="flex gap-2">
           <div className="input input-bordered flex-1 flex items-center text-sm text-base-content/60 overflow-hidden">
-            <span className="truncate">/w/{slug}</span>
+            <span className="truncate">/{pathPrefix}/{slug}</span>
           </div>
           <button onClick={copyLink} className={`btn btn-sm ${copied ? 'btn-success' : 'btn-outline'}`}>
             {copied ? '✓ Tersalin' : 'Salin'}

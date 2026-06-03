@@ -9,8 +9,11 @@ import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { FloralDivider } from './Ornaments'
 import Particles from '../Particles'
+import { isWeddingType, getEventType } from '@/lib/events'
 
 export default function FloralTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
+  const isWedding = isWeddingType(wedding.event_type)
+  const eventTypeObj = getEventType(wedding.event_type)
   return (
     <main style={{
       backgroundColor: colors.bg,
@@ -65,34 +68,45 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
           className="text-xs tracking-[0.35em] uppercase mb-6"
           style={{ color: colors.textMuted, animation: 'fl-fade-in 0.8s ease both 0.3s' }}
         >
-          Undangan Pernikahan
+          {isWedding ? 'Undangan Pernikahan' : eventTypeObj.label}
         </p>
         <div
           className="inline-block border-2 rounded-full px-10 py-8 mb-6"
           style={{ borderColor: colors.accent + '60', animation: 'fl-border-grow 0.9s cubic-bezier(0.22,1,0.36,1) both 0.4s' }}
         >
-          <h1
-            className="text-5xl md:text-6xl italic font-bold"
-            style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.5s' }}
-          >
-            {wedding.bride_name}
-          </h1>
-          <div className="flex items-center justify-center gap-3 my-3" style={{ animation: 'fl-fade-in 0.8s ease both 0.8s' }}>
-            <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
-            <span
-              className="text-2xl"
-              style={{ color: colors.primary, animation: 'fl-spin-bloom 0.8s cubic-bezier(0.22,1,0.36,1) both 0.85s' }}
+          {isWedding ? (
+            <>
+              <h1
+                className="text-5xl md:text-6xl italic font-bold"
+                style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.5s' }}
+              >
+                {wedding.bride_name}
+              </h1>
+              <div className="flex items-center justify-center gap-3 my-3" style={{ animation: 'fl-fade-in 0.8s ease both 0.8s' }}>
+                <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
+                <span
+                  className="text-2xl"
+                  style={{ color: colors.primary, animation: 'fl-spin-bloom 0.8s cubic-bezier(0.22,1,0.36,1) both 0.85s' }}
+                >
+                  ✿
+                </span>
+                <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
+              </div>
+              <h1
+                className="text-5xl md:text-6xl italic font-bold"
+                style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.95s' }}
+              >
+                {wedding.groom_name}
+              </h1>
+            </>
+          ) : (
+            <h1
+              className="text-5xl md:text-6xl italic font-bold"
+              style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.5s' }}
             >
-              ✿
-            </span>
-            <div className="h-px w-12" style={{ backgroundColor: colors.accent }} />
-          </div>
-          <h1
-            className="text-5xl md:text-6xl italic font-bold"
-            style={{ color: colors.textDark, animation: 'fl-float-up 0.9s cubic-bezier(0.22,1,0.36,1) both 0.95s' }}
-          >
-            {wedding.groom_name}
-          </h1>
+              {wedding.event_title || wedding.bride_name}
+            </h1>
+          )}
         </div>
 
         <div style={{ animation: 'fl-fade-in 0.8s ease both 1.2s' }}>
@@ -110,7 +124,7 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
           )}
         </div>
 
-        {(wedding.bride_parents || wedding.groom_parents) && (
+        {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
           <div className="mt-6 max-w-sm mx-auto space-y-3 text-sm" style={{ animation: 'fl-float-up 0.9s ease both 1.4s' }}>
             {wedding.bride_parents && (
               <div className="text-center">
@@ -145,18 +159,20 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
       )}
 
       {/* Akad Nikah */}
-      <AnimatedSection animation="float-up">
-        <EventSection
-          label="Akad Nikah"
-          date={wedding.akad_date}
-          time={wedding.akad_time}
-          venueName={wedding.akad_venue_name}
-          venueAddress={wedding.akad_venue_address}
-          venueMapsUrl={wedding.akad_venue_maps_url}
-          colors={colors}
-          decorator={<p className="text-2xl mb-3 select-none" style={{ animation: 'fl-spin-bloom 0.8s ease both' }}>🌿</p>}
-        />
-      </AnimatedSection>
+      {isWedding && (
+        <AnimatedSection animation="float-up">
+          <EventSection
+            label="Akad Nikah"
+            date={wedding.akad_date}
+            time={wedding.akad_time}
+            venueName={wedding.akad_venue_name}
+            venueAddress={wedding.akad_venue_address}
+            venueMapsUrl={wedding.akad_venue_maps_url}
+            colors={colors}
+            decorator={<p className="text-2xl mb-3 select-none" style={{ animation: 'fl-spin-bloom 0.8s ease both' }}>🌿</p>}
+          />
+        </AnimatedSection>
+      )}
 
       {/* Resepsi */}
       <AnimatedSection animation="float-up" delay={100}>

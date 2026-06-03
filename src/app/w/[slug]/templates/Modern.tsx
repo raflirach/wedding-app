@@ -8,8 +8,11 @@ import TimelineSection from './TimelineSection'
 import AnimatedSection from '../AnimatedSection'
 import { ModernDivider } from './Ornaments'
 import Particles from '../Particles'
+import { isWeddingType, getEventType } from '@/lib/events'
 
 export default function ModernTemplate({ wedding, colors, AttendanceForm, WishesDisplayComponent, wishes, photos, weddingId, guestName }: TemplateProps) {
+  const isWedding = isWeddingType(wedding.event_type)
+  const eventTypeObj = getEventType(wedding.event_type)
   return (
     <main className="min-h-screen bg-white" style={{
       position: 'relative',
@@ -57,32 +60,43 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
           className="relative text-xs tracking-[0.5em] uppercase font-light mb-6"
           style={{ color: colors.accent, animation: 'mo-slide-down 0.6s ease both 0.2s' }}
         >
-          Wedding Invitation
+          {isWedding ? 'Wedding Invitation' : eventTypeObj.label}
         </p>
         <div className="relative space-y-0">
-          <h1
-            className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none"
-            style={{ animation: 'mo-slide-left 0.7s ease-out both 0.4s' }}
-          >
-            {wedding.bride_name}
-          </h1>
-          <div
-            className="inline-block px-6 py-1 my-3 text-sm font-bold tracking-[0.3em] uppercase"
-            style={{ backgroundColor: colors.primary, color: 'white', animation: 'mo-slide-down 0.5s ease both 0.7s' }}
-          >
-            &amp;
-          </div>
-          <h1
-            className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none"
-            style={{ animation: 'mo-slide-right 0.7s ease-out both 0.9s' }}
-          >
-            {wedding.groom_name}
-          </h1>
+          {isWedding ? (
+            <>
+              <h1
+                className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none"
+                style={{ animation: 'mo-slide-left 0.7s ease-out both 0.4s' }}
+              >
+                {wedding.bride_name}
+              </h1>
+              <div
+                className="inline-block px-6 py-1 my-3 text-sm font-bold tracking-[0.3em] uppercase"
+                style={{ backgroundColor: colors.primary, color: 'white', animation: 'mo-slide-down 0.5s ease both 0.7s' }}
+              >
+                &amp;
+              </div>
+              <h1
+                className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none"
+                style={{ animation: 'mo-slide-right 0.7s ease-out both 0.9s' }}
+              >
+                {wedding.groom_name}
+              </h1>
+            </>
+          ) : (
+            <h1
+              className="text-5xl md:text-7xl font-black uppercase tracking-tight text-white leading-none"
+              style={{ animation: 'mo-slide-left 0.7s ease-out both 0.4s' }}
+            >
+              {wedding.event_title || wedding.bride_name}
+            </h1>
+          )}
         </div>
       </section>
 
       {/* Opening + Parents */}
-      {(wedding.opening_text || wedding.bride_parents || wedding.groom_parents) && (
+      {(wedding.opening_text || (isWedding && (wedding.bride_parents || wedding.groom_parents))) && (
         <AnimatedSection animation="fade-up">
           <section className="py-10 px-6 max-w-lg mx-auto space-y-6">
             {wedding.opening_text && (
@@ -90,7 +104,7 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
                 {wedding.opening_text}
               </p>
             )}
-            {(wedding.bride_parents || wedding.groom_parents) && (
+            {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {wedding.bride_parents && (
                   <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
@@ -123,7 +137,7 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
       )}
 
       {/* Akad Nikah */}
-      {(wedding.akad_date || wedding.akad_venue_name) && (
+      {isWedding && (wedding.akad_date || wedding.akad_venue_name) && (
         <AnimatedSection animation="slide-left">
           <section className="py-10 px-6 max-w-lg mx-auto">
             <div className="flex gap-4">
