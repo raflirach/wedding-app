@@ -9,6 +9,7 @@ import type { WeddingActionResult } from '@/app/actions/weddings'
 import { TEMPLATES, COLOR_SCHEMES } from '@/lib/templates'
 import CoverPhotoUpload from '@/components/CoverPhotoUpload'
 import MusicUpload from '@/components/MusicUpload'
+import PersonPhotoUpload from '@/components/PersonPhotoUpload'
 
 export const weddingSchema = z.object({
   bride_name: z.string().min(2, 'Minimal 2 karakter'),
@@ -31,8 +32,12 @@ export const weddingSchema = z.object({
   cover_photo_url: z.string().optional(),
   bride_full_name: z.string().optional(),
   groom_full_name: z.string().optional(),
-  bride_parents: z.string().optional(),
-  groom_parents: z.string().optional(),
+  bride_father_name: z.string().optional(),
+  bride_mother_name: z.string().optional(),
+  groom_father_name: z.string().optional(),
+  groom_mother_name: z.string().optional(),
+  bride_photo_url: z.string().optional(),
+  groom_photo_url: z.string().optional(),
   opening_text: z.string().optional(),
   music_url: z.string().optional(),
   bank_1_name: z.string().optional(),
@@ -179,38 +184,68 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
 
       {/* Detail Lengkap Mempelai */}
       <div className="card bg-base-100 shadow">
-        <div className="card-body space-y-4">
+        <div className="card-body space-y-6">
           <h2 className="font-semibold text-base">Detail Lengkap Mempelai</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Nama Lengkap Mempelai Wanita</legend>
-              <input id="bride_full_name" {...register('bride_full_name')} type="text"
-                placeholder="Contoh: Sari Dewi Kusuma, S.Pd" className="input input-bordered" />
-            </fieldset>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Nama Lengkap Mempelai Pria</legend>
-              <input id="groom_full_name" {...register('groom_full_name')} type="text"
-                placeholder="Contoh: Budi Santoso, S.T" className="input input-bordered" />
-            </fieldset>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Nama Orang Tua Mempelai Wanita</legend>
-              <input id="bride_parents" {...register('bride_parents')} type="text"
-                placeholder="Putri dari Bapak Ahmad & Ibu Siti" className="input input-bordered" />
-            </fieldset>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Nama Orang Tua Mempelai Pria</legend>
-              <input id="groom_parents" {...register('groom_parents')} type="text"
-                placeholder="Putra dari Bapak Hendra & Ibu Wati" className="input input-bordered" />
-            </fieldset>
-            <div className="col-span-full">
-              <fieldset className="fieldset w-full!">
-                <legend className="fieldset-legend">Kata Pembuka</legend>
-                <textarea id="opening_text" {...register('opening_text')} rows={3}
-                  placeholder="Contoh: Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami..."
-                  className="textarea textarea-bordered w-full" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Mempelai Wanita */}
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-base-content/70">Mempelai Wanita</p>
+              <input type="hidden" {...register('bride_photo_url')} />
+              <PersonPhotoUpload
+                value={watch('bride_photo_url')}
+                onChange={(url) => setValue('bride_photo_url', url)}
+                label="Foto mempelai wanita"
+              />
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Lengkap</legend>
+                <input {...register('bride_full_name')} type="text"
+                  placeholder="Sari Dewi Kusuma, S.Pd" className="input input-bordered w-full" />
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Bapak</legend>
+                <input {...register('bride_father_name')} type="text"
+                  placeholder="Bapak Ahmad" className="input input-bordered w-full" />
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Ibu</legend>
+                <input {...register('bride_mother_name')} type="text"
+                  placeholder="Ibu Siti" className="input input-bordered w-full" />
+              </fieldset>
+            </div>
+
+            {/* Mempelai Pria */}
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-base-content/70">Mempelai Pria</p>
+              <input type="hidden" {...register('groom_photo_url')} />
+              <PersonPhotoUpload
+                value={watch('groom_photo_url')}
+                onChange={(url) => setValue('groom_photo_url', url)}
+                label="Foto mempelai pria"
+              />
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Lengkap</legend>
+                <input {...register('groom_full_name')} type="text"
+                  placeholder="Budi Santoso, S.T" className="input input-bordered w-full" />
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Bapak</legend>
+                <input {...register('groom_father_name')} type="text"
+                  placeholder="Bapak Hendra" className="input input-bordered w-full" />
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Nama Ibu</legend>
+                <input {...register('groom_mother_name')} type="text"
+                  placeholder="Ibu Wati" className="input input-bordered w-full" />
               </fieldset>
             </div>
           </div>
+
+          <fieldset className="fieldset w-full!">
+            <legend className="fieldset-legend">Kata Pembuka</legend>
+            <textarea {...register('opening_text')} rows={3}
+              placeholder="Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami..."
+              className="textarea textarea-bordered w-full" />
+          </fieldset>
         </div>
       </div>
 
