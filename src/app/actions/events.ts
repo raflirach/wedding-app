@@ -126,6 +126,7 @@ export async function updateEvent(id: string, data: EventFormData): Promise<Even
   }
 
   revalidatePath(`/events/${id}`)
+  redirect(`/events/${id}`)
 }
 
 export async function deleteEvent(id: string): Promise<void> {
