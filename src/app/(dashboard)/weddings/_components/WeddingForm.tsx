@@ -204,12 +204,12 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Nama Bapak</legend>
                 <input {...register('bride_father_name')} type="text"
-                  placeholder="Bapak Ahmad" className="input input-bordered w-full" />
+                  placeholder="Ahmad Suryanto" className="input input-bordered w-full" />
               </fieldset>
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Nama Ibu</legend>
                 <input {...register('bride_mother_name')} type="text"
-                  placeholder="Ibu Siti" className="input input-bordered w-full" />
+                  placeholder="Siti Rahayu" className="input input-bordered w-full" />
               </fieldset>
             </div>
 
@@ -230,12 +230,12 @@ export default function WeddingForm({ defaultValues, onSubmit, submitLabel, canc
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Nama Bapak</legend>
                 <input {...register('groom_father_name')} type="text"
-                  placeholder="Bapak Hendra" className="input input-bordered w-full" />
+                  placeholder="Hendra Wijaya" className="input input-bordered w-full" />
               </fieldset>
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">Nama Ibu</legend>
                 <input {...register('groom_mother_name')} type="text"
-                  placeholder="Ibu Wati" className="input input-bordered w-full" />
+                  placeholder="Wati Kusuma" className="input input-bordered w-full" />
               </fieldset>
             </div>
           </div>
