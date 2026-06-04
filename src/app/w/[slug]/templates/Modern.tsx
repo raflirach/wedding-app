@@ -96,7 +96,7 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
       </section>
 
       {/* Opening + Parents */}
-      {(wedding.opening_text || (isWedding && (wedding.bride_parents || wedding.groom_parents))) && (
+      {(wedding.opening_text || isWedding) && (
         <AnimatedSection animation="fade-up">
           <section className="py-10 px-6 max-w-lg mx-auto space-y-6">
             {wedding.opening_text && (
@@ -104,20 +104,31 @@ export default function ModernTemplate({ wedding, colors, AttendanceForm, Wishes
                 {wedding.opening_text}
               </p>
             )}
-            {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {wedding.bride_parents && (
-                  <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
-                    <p className="font-bold text-gray-900">{wedding.bride_full_name || wedding.bride_name}</p>
-                    <p className="text-sm text-gray-500 mt-1">{wedding.bride_parents}</p>
+            {isWedding && (
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { photo: wedding.bride_photo_url, fullName: wedding.bride_full_name || wedding.bride_name, father: wedding.bride_father_name, mother: wedding.bride_mother_name, label: 'Putri' },
+                  { photo: wedding.groom_photo_url, fullName: wedding.groom_full_name || wedding.groom_name, father: wedding.groom_father_name, mother: wedding.groom_mother_name, label: 'Putra' },
+                ].map((p, i) => (
+                  <div key={i} className="flex flex-col items-center text-center gap-2">
+                    {p.photo && (
+                      <div className="relative w-20 h-20 rounded-full overflow-hidden border-2" style={{ borderColor: colors.primary }}>
+                        <Image src={p.photo} alt={p.fullName} fill className="object-cover" unoptimized />
+                      </div>
+                    )}
+                    <div className="border-l-4 pl-3 text-left w-full" style={{ borderColor: colors.primary }}>
+                      <p className="font-bold text-gray-900 text-sm">{p.fullName}</p>
+                      {(p.father || p.mother) && (
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          {p.label} dari
+                          {p.father && <> Bapak {p.father}</>}
+                          {p.father && p.mother && ' &'}
+                          {p.mother && <> Ibu {p.mother}</>}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                )}
-                {wedding.groom_parents && (
-                  <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
-                    <p className="font-bold text-gray-900">{wedding.groom_full_name || wedding.groom_name}</p>
-                    <p className="text-sm text-gray-500 mt-1">{wedding.groom_parents}</p>
-                  </div>
-                )}
+                ))}
               </div>
             )}
           </section>

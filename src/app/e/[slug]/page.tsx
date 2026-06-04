@@ -93,6 +93,12 @@ export default async function EventPage({ params, searchParams }: Props) {
     event_type: event.event_type,
     event_title: event.event_title,
     host_name: event.host_name ?? null,
+    bride_father_name: null,
+    bride_mother_name: null,
+    groom_father_name: null,
+    groom_mother_name: null,
+    bride_photo_url: null,
+    groom_photo_url: null,
   }
 
   return (

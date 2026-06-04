@@ -124,27 +124,29 @@ export default function FloralTemplate({ wedding, colors, AttendanceForm, Wishes
           )}
         </div>
 
-        {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
-          <div className="mt-6 max-w-sm mx-auto space-y-3 text-sm" style={{ animation: 'fl-float-up 0.9s ease both 1.4s' }}>
-            {wedding.bride_parents && (
-              <div className="text-center">
-                <p className="font-semibold" style={{ color: colors.textDark }}>
-                  {wedding.bride_full_name || wedding.bride_name}
-                </p>
-                <p style={{ color: colors.textMuted }}>{wedding.bride_parents}</p>
+        {isWedding && (
+          <div className="mt-6 grid grid-cols-2 gap-4 max-w-sm mx-auto text-sm" style={{ animation: 'fl-float-up 0.9s ease both 1.4s' }}>
+            {[
+              { photo: wedding.bride_photo_url, fullName: wedding.bride_full_name || wedding.bride_name, father: wedding.bride_father_name, mother: wedding.bride_mother_name, label: 'Putri' },
+              { photo: wedding.groom_photo_url, fullName: wedding.groom_full_name || wedding.groom_name, father: wedding.groom_father_name, mother: wedding.groom_mother_name, label: 'Putra' },
+            ].map((p, i) => (
+              <div key={i} className="text-center space-y-2">
+                {p.photo && (
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden mx-auto border-2" style={{ borderColor: colors.accent + '80' }}>
+                    <Image src={p.photo} alt={p.fullName} fill className="object-cover" unoptimized />
+                  </div>
+                )}
+                <p className="font-semibold" style={{ color: colors.textDark }}>{p.fullName}</p>
+                {(p.father || p.mother) && (
+                  <p className="text-xs leading-relaxed" style={{ color: colors.textMuted }}>
+                    {p.label} dari
+                    {p.father && <> Bapak {p.father}</>}
+                    {p.father && p.mother && ' &'}
+                    {p.mother && <> Ibu {p.mother}</>}
+                  </p>
+                )}
               </div>
-            )}
-            {wedding.bride_parents && wedding.groom_parents && (
-              <p className="text-center" style={{ color: colors.accent }}>✿</p>
-            )}
-            {wedding.groom_parents && (
-              <div className="text-center">
-                <p className="font-semibold" style={{ color: colors.textDark }}>
-                  {wedding.groom_full_name || wedding.groom_name}
-                </p>
-                <p style={{ color: colors.textMuted }}>{wedding.groom_parents}</p>
-              </div>
-            )}
+            ))}
           </div>
         )}
       </section>

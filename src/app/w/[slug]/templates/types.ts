@@ -19,6 +19,12 @@ export type WeddingData = {
   groom_full_name: string | null
   bride_parents: string | null
   groom_parents: string | null
+  bride_father_name: string | null
+  bride_mother_name: string | null
+  groom_father_name: string | null
+  groom_mother_name: string | null
+  bride_photo_url: string | null
+  groom_photo_url: string | null
   opening_text: string | null
   wedding_date: string | null
   wedding_time: string | null

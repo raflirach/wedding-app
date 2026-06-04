@@ -103,24 +103,29 @@ export default function ElegantTemplate({ wedding, colors, AttendanceForm, Wishe
           {wedding.opening_text || 'Bersama keluarga, kami mengundang kehadiran Anda'}
         </p>
 
-        {isWedding && (wedding.bride_parents || wedding.groom_parents) && (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto text-sm" style={{ animation: 'el-fade-up 0.8s ease both 1.6s' }}>
-            {wedding.bride_parents && (
-              <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.primaryLight }}>
-                <p className="font-semibold mb-1" style={{ color: colors.textDark }}>
-                  {wedding.bride_full_name || wedding.bride_name}
-                </p>
-                <p style={{ color: colors.textMuted }}>{wedding.bride_parents}</p>
+        {isWedding && (
+          <div className="mt-8 grid grid-cols-2 gap-4 max-w-lg mx-auto text-sm" style={{ animation: 'el-fade-up 0.8s ease both 1.6s' }}>
+            {[
+              { photo: wedding.bride_photo_url, fullName: wedding.bride_full_name || wedding.bride_name, father: wedding.bride_father_name, mother: wedding.bride_mother_name },
+              { photo: wedding.groom_photo_url, fullName: wedding.groom_full_name || wedding.groom_name, father: wedding.groom_father_name, mother: wedding.groom_mother_name },
+            ].map((p, i) => (
+              <div key={i} className="text-center p-4 rounded-xl space-y-2" style={{ backgroundColor: colors.primaryLight }}>
+                {p.photo && (
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden mx-auto border-2" style={{ borderColor: colors.accent + '60' }}>
+                    <Image src={p.photo} alt={p.fullName} fill className="object-cover" unoptimized />
+                  </div>
+                )}
+                <p className="font-semibold" style={{ color: colors.textDark }}>{p.fullName}</p>
+                {(p.father || p.mother) && (
+                  <p className="text-xs leading-relaxed" style={{ color: colors.textMuted }}>
+                    {i === 0 ? 'Putri' : 'Putra'} dari
+                    {p.father && <> Bapak {p.father}</>}
+                    {p.father && p.mother && ' &'}
+                    {p.mother && <> Ibu {p.mother}</>}
+                  </p>
+                )}
               </div>
-            )}
-            {wedding.groom_parents && (
-              <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.primaryLight }}>
-                <p className="font-semibold mb-1" style={{ color: colors.textDark }}>
-                  {wedding.groom_full_name || wedding.groom_name}
-                </p>
-                <p style={{ color: colors.textMuted }}>{wedding.groom_parents}</p>
-              </div>
-            )}
+            ))}
           </div>
         )}
       </section>
