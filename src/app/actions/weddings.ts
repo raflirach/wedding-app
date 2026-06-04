@@ -170,6 +170,7 @@ export async function updateWedding(id: string, data: WeddingFormData): Promise<
 
   revalidatePath(`/weddings/${id}`)
   revalidatePath('/dashboard')
+  redirect(`/weddings/${id}`)
 }
 
 export async function deleteWedding(id: string): Promise<void> {
